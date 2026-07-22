@@ -10,7 +10,7 @@ API collectors fetch and validate a complete requested batch in memory before pu
 Official/manual sources
         |
         v
-ignored intake (manual CBI only) ---- checksum/identity inspection
+ignored intake (manual CBI/SCI) ----- checksum/identity inspection
         |
         v
 dated immutable raw snapshots
@@ -54,7 +54,7 @@ Derived data must identify all inputs and its generating script. Cross-category 
 
 ## Reproducibility
 
-`metadata/file_manifest.csv` records paths, sizes, and SHA-256 checksums for files distributed by the repository: canonical CBI/imported-macro raw files plus cleaned and derived data. Temporary intake, generated reports, and reproducible dated TSETMC API caches are excluded from Git and from the distributed-file manifest. TSETMC raw paths remain recorded in the data catalog. The update runner reconstructs the 18 CBI intake copies from canonical raw workbooks before invoking the CBI processor and refuses a conflicting incoming file.
+`metadata/file_manifest.csv` records paths, sizes, and SHA-256 checksums for files distributed by the repository: canonical CBI, SCI, and imported-macro raw files plus cleaned and derived data. Temporary intake, generated reports, and reproducible dated TSETMC API caches are excluded from Git and from the distributed-file manifest. TSETMC raw paths remain recorded in the data catalog. SCI rebuilds read the canonical raw workbooks directly; incoming copies are only needed for first-time ingestion.
 
 The imported macro CSVs have a separate idempotent validator at `src/macro/register_standardized_macro_csvs.py`. Their raw layer is the exact artifact received from the other project; upstream provider downloads are unavailable for some series. Both processors preserve each other's catalog and registry entries.
 

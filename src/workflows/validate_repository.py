@@ -45,6 +45,24 @@ def validate() -> dict[str, object]:
             if item.get(field) and not (ROOT / item[field]).is_file():
                 errors.append(f"catalog missing {field}: {item[field]}")
 
+    expected_sci = {
+        "sci_building_permits_annual",
+        "sci_tehran_housing_market_quarterly_1388_1399",
+        "sci_tehran_building_input_indices_base1402",
+        "sci_tehran_building_input_index_legacy_base1390",
+        "sci_tehran_selected_building_material_prices_1404q4",
+        "sci_urban_cpi_national_monthly_by_group",
+        "sci_urban_cpi_national_annual_by_group",
+        "sci_urban_cpi_provincial",
+        "sci_urban_cpi_total_historical",
+    }
+    actual_sci = {item["dataset_id"] for item in catalog if item["dataset_id"].startswith("sci_")}
+    if actual_sci != expected_sci:
+        errors.append(f"SCI catalog set mismatch: {sorted(actual_sci ^ expected_sci)}")
+    sci_inventory = rows(ROOT / "metadata" / "sci_excel_inventory.csv")
+    if len(sci_inventory) != 58 or len({item["source_file"] for item in sci_inventory}) != 11:
+        errors.append("SCI inventory must contain 58 sheets from 11 workbooks")
+
     cleaned = ROOT / "data" / "cleaned" / "stocks" / "housing_finance" / "mortgage_facility_certificates" / "tsetmc_bank_maskan_mortgage_certificates_daily.csv"
     derived = ROOT / "data" / "derived" / "stocks" / "housing_finance" / "tsetmc_bank_maskan_tese_continuous_daily.csv"
     tese_rows = rows(cleaned)
@@ -71,6 +89,8 @@ def validate() -> dict[str, object]:
         "errors": errors,
         "manifest_files": len(manifest),
         "catalog_datasets": len(catalog),
+        "sci_datasets": len(actual_sci),
+        "sci_inventory_sheets": len(sci_inventory),
         "tese_cleaned_rows": len(tese_rows),
         "tese_instruments": len({item["ins_code"] for item in tese_rows}),
         "tese_derived_rows": len(aggregate_rows),

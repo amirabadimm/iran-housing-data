@@ -44,13 +44,14 @@ def main() -> None:
     parser.add_argument("--refresh-tsetmc", action="store_true", help="Collect a new immutable official TSETMC raw snapshot")
     parser.add_argument("--rebuild-tsetmc", action="store_true", help="Rebuild TSETMC cleaned/derived outputs from retained raw")
     parser.add_argument("--rebuild-cbi", action="store_true", help="Rebuild manually exported CBI workbooks")
+    parser.add_argument("--rebuild-sci", action="store_true", help="Rebuild SCI statistical-information workbooks from canonical raw files")
     parser.add_argument("--rebuild-imported-macro", action="store_true", help="Revalidate imported standardized macro CSVs")
     parser.add_argument("--all-local", action="store_true", help="Run every offline rebuild without network collection")
     parser.add_argument("--as-of", help="Gregorian TSETMC snapshot date YYYY-MM-DD")
     parser.add_argument("--report", default="outputs/validation/latest_repository_validation.json", help="Validation report path")
     args = parser.parse_args()
 
-    selected = any((args.refresh_tsetmc, args.rebuild_tsetmc, args.rebuild_cbi, args.rebuild_imported_macro, args.all_local))
+    selected = any((args.refresh_tsetmc, args.rebuild_tsetmc, args.rebuild_cbi, args.rebuild_sci, args.rebuild_imported_macro, args.all_local))
     if not selected:
         parser.error("select an update/rebuild action")
     if args.refresh_tsetmc and args.rebuild_tsetmc:
@@ -61,6 +62,8 @@ def main() -> None:
         run("src/common/process_cbi_tsd_exports.py")
     if args.all_local or args.rebuild_imported_macro:
         run("src/macro/register_standardized_macro_csvs.py")
+    if args.all_local or args.rebuild_sci:
+        run("src/common/process_sci_statistical_information.py")
     if args.refresh_tsetmc:
         command = ["src/stocks/collect_tsetmc_housing_market.py", "--refresh"]
         if args.as_of:

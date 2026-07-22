@@ -6,6 +6,12 @@ Run `python src/workflows/update_repository_data.py --refresh-tsetmc` when creat
 
 The collector queries every plausible exact `تسهYYMM` symbol from 1389 onward plus annual post-1400 symbols because TSETMC's broad search is capped/ranked and incomplete. Nonexistent candidate months are allowed; discovered records without valid trading histories are excluded. The collector requires non-empty mortgage-certificate, real-estate-fund, and developer groups and all three indices. It retains only instrument-days with positive closing price, volume, trade count, and trade value. Never replace an existing dated raw batch.
 
+## Statistical Center of Iran workbooks
+
+The registered source is <https://amar.org.ir/statistical-information>. On 2026-07-23 the portal returned HTTP 502 to automated access, so dataset identity, coverage, units, table bases, and missing-value symbols were taken from the complete Persian workbook contents rather than inferred from filenames. Recheck portal licensing manually when it is accessible.
+
+Run `python src/workflows/update_repository_data.py --rebuild-sci` for an offline rebuild. The processor inventories every sheet, preserves all eleven originals byte-for-byte, and emits nine long-form datasets. It retains `-`, `×`, and workbook-specific missing markers, does not impute values, and keeps base-1390 and base-1402 Tehran construction-input indices separate rather than splicing them.
+
 On future runs, the search horizon is calculated from the collection date's Jalali year. A network refresh publishes nothing until the complete batch passes. Run `python src/workflows/update_repository_data.py --rebuild-tsetmc` to reproduce outputs from the latest retained raw batch without network access.
 
 Document source-specific collection instructions here as sources are approved. Include access date, URL or contact, method, licensing or confidentiality constraints, expected format, update frequency, and verification checks.

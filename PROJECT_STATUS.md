@@ -4,11 +4,11 @@ Latest update: 2026-07-22
 
 ## Available datasets
 
-Thirty-four datasets are registered: 20 housing, 7 macro, 6 stocks, and 1 related-industries dataset. Thirteen housing datasets contain all-urban and Tehran values paired by period. The securities collection covers 124 validated instruments, including 104 traded `تسه` series, and three market-sector indices. The sixth stocks dataset is a derived continuous daily `تسه` series.
+Forty-three datasets are registered: 25 housing, 11 macro, 6 stocks, and 1 related-industries dataset. Thirteen CBI housing datasets contain all-urban and Tehran values paired by period. The SCI collection adds nine datasets from eleven complete Persian workbooks: building permits, Tehran housing prices/rents/transactions, Tehran construction-input indices/material prices, and urban CPI. The securities collection covers 124 validated instruments, including 104 traded `تسه` series, and three market-sector indices. The sixth stocks dataset is a derived continuous daily `تسه` series.
 
 ## Awaiting review
 
-The CBI page's licensing/reuse terms and the substantive definitions of the exported indicators require human review. SCI CPI/GDP table identities and values require independent verification. Upstream raw inputs are unavailable for the imported FX, اخزا, and Federal Funds processed files.
+The CBI and SCI portals' licensing/reuse terms require human review. The SCI portal returned HTTP 502 during automated verification on 2026-07-23, so its supplied workbook contents and internal metadata were treated as authoritative. Upstream raw inputs are unavailable for the imported FX, اخزا, and Federal Funds processed files.
 
 ## Cleaned datasets
 
@@ -34,6 +34,8 @@ None recorded.
 
 `collect_tsetmc_housing_market_20260722`: exhaustively enumerated monthly `تسه` symbols, preserved official non-empty TSETMC responses, created 6 standardized source-level datasets, and created 1 derived continuous `تسه` series.
 
+`process_sci_statistical_information_20260723`: preserved 11 complete SCI workbooks, inventoried 58 sheets, and created 9 standardized datasets containing 99,114 rows.
+
 ## Upcoming collection needs
 
 Not yet defined.
@@ -44,4 +46,4 @@ None.
 
 ## Maintenance workflow
 
-Use `python src/workflows/update_repository_data.py --refresh-tsetmc` for a new atomic market snapshot, `--rebuild-tsetmc` for an offline market rebuild, or `--all-local` for all locally reproducible collections. Every run ends with `src/workflows/validate_repository.py`; operational details are in `docs/UPDATE_RUNBOOK.md`.
+Use `python src/workflows/update_repository_data.py --rebuild-sci` for an offline SCI rebuild, `--refresh-tsetmc` for a new atomic market snapshot, `--rebuild-tsetmc` for an offline market rebuild, or `--all-local` for all locally reproducible collections. Every run ends with `src/workflows/validate_repository.py`; operational details are in `docs/UPDATE_RUNBOOK.md`.

@@ -48,6 +48,10 @@ See `metadata/data_catalog.csv` for dataset-level coverage and provenance, `meta
 
 The Excel workbooks—not filenames, earlier documentation, or translated labels—are the authority for dataset identity. Exact Persian report titles, dataset paths, labels, units, reported ranges, frequencies, and observation counts are recorded in `metadata/excel_series_inventory.csv`. Cleaned values retain those source definitions without English renaming.
 
+## Current Statistical Center of Iran collection
+
+Eleven Persian SCI workbooks from the official [statistical-information portal](https://amar.org.ir/statistical-information) are preserved byte-for-byte under dated provider folders in `data/raw/`. They produce nine standardized long-form datasets covering building permits, Tehran housing prices/rents/transactions, Tehran construction-input indices and selected material prices, and national/provincial/historical urban CPI. Workbook and sheet coverage is auditable in `metadata/sci_excel_inventory.csv`; source missing markers are retained and no values are interpolated, rebased, or spliced.
+
 ## Imported standardized macro collection
 
 Five standardized macro CSVs were received from another user project on 2026-07-22:
@@ -91,7 +95,7 @@ To collect a new automatically dated batch, use the repository update runner. Co
 python src\workflows\update_repository_data.py --refresh-tsetmc
 ```
 
-For a fully offline rebuild of every retained collection, use `--all-local`. The runner reconstructs the ignored CBI intake copies from canonical raw workbooks, runs every processor, and finishes with repository validation:
+For a fully offline rebuild of every retained collection, use `--all-local`. The runner rebuilds both CBI and SCI manual collections from canonical raw workbooks, runs every processor, and finishes with repository validation:
 
 ```powershell
 python src\workflows\update_repository_data.py --all-local

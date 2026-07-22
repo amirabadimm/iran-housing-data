@@ -35,3 +35,11 @@ The five received CSVs were already UTF-8-with-BOM, comma-delimited, lowercase `
 - FEDFUNDS remains a percentage-point level. Upstream conversion approximated Jalali-month values by day-overlap weighting Gregorian monthly averages; it is not an exact daily-series Jalali average.
 
 These rules document the received datasets; they do not authorize merging, frequency conversion, feature engineering, correlation, regression, or reuse of conclusions from the other project.
+
+## SCI statistical-information workbooks (2026-07-23)
+
+All 58 sheets in eleven supplied Persian workbooks are inventoried. Published tables are normalized to long form while preserving Solar Hijri periods, Persian categories, geographic level, source sheet/file, units, index base years, and explicit missing markers. No interpolation, aggregation, inflation adjustment, unit conversion, or frequency conversion is performed.
+
+Tehran housing prices, rent, transactions, quarterly and annual changes remain distinct measures in one region-period panel. Construction-input indices using base years 1390 and 1402 remain separate datasets. CPI tables are separated economically into national monthly by group, national annual by group, provincial tables, and long historical total series. Permit footnotes are not parsed as observations; their definitions remain recoverable from immutable raw workbooks and the sheet inventory.
+
+Provincial urban CPI Table 9 contains an evident header typo: its year blocks end `1401, 1402, 1402, 1404, 1405`, while parallel Tables 7, 8, and 10 use `1401, 1402, 1403, 1404, 1405`. The processor records the intervening Table 9 block as 1403 only after asserting this exact pattern; the raw workbook remains unchanged and the correction is registered in `metadata/data_issues.csv`.

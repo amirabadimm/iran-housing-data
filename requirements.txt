@@ -2,3 +2,4 @@ algotik-tse==1.0.3
 jdatetime>=5,<7
 openpyxl>=3.1,<4
 requests>=2.32,<3
+xlrd>=2.0,<3

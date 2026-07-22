@@ -32,6 +32,7 @@ python src\workflows\validate_repository.py --report outputs\validation\latest_r
 
 ```powershell
 python src\workflows\update_repository_data.py --rebuild-cbi
+python src\workflows\update_repository_data.py --rebuild-sci
 python src\workflows\update_repository_data.py --rebuild-imported-macro
 python src\workflows\update_repository_data.py --rebuild-tsetmc --as-of 2026-07-22
 python src\workflows\update_repository_data.py --refresh-tsetmc --as-of 2026-08-15
@@ -56,6 +57,7 @@ python src\workflows\update_repository_data.py --refresh-tsetmc --as-of 2026-08-
 - Existing dated raw destination: choose the truthful collection date or rebuild that retained snapshot; never overwrite it.
 - Validation failure: do not commit the generated outputs. Read the reported errors, correct the source-specific processor, rerun the same offline rebuild, and validate again.
 - Conflicting CBI intake file: the runner stops. Compare it with the canonical raw workbook; it will not overwrite a differing file.
+- Conflicting SCI intake file: the processor stops rather than overwrite a differing canonical raw workbook. Once the canonical raw copy exists, `--rebuild-sci` does not require the ignored intake folder.
 
 ## Outputs and audit trail
 
