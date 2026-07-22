@@ -1,5 +1,21 @@
 # Decisions log
 
+## 2026-07-22: Housing-linked TSETMC collection
+
+- Preserve a dated, immutable raw JSON batch and make cleaned outputs reproducible offline.
+- Validate algotik-tse sector mappings, then use official TSETMC JSON endpoints for reliable bulk retrieval.
+- Use explicit economic folders: housing finance, real-estate funds, real-estate developers, reference, and construction-material market indices.
+- Reject timeouts and empty required groups; exclude rather than publish individually empty legacy instruments.
+- Label cement and tile/ceramic data as market-sector indices, not production quantities.
+
+## 2026-07-22: Executable update workflow
+
+- Use scripts, rather than a notebook, as the authoritative reproducible pipeline; notebooks may consume outputs but must not be the only way to rebuild them.
+- Use one repository runner to coordinate independent source processors and a separate validator.
+- Date every network snapshot automatically, refuse same-date overwrite, and select the latest retained complete snapshot for default offline rebuilds.
+- Advance exact `تسه` discovery using the collection date's Jalali year.
+- Write a JSON validation report after coordinated updates.
+
 | Date | Decision | Reason | Affected files | Decided by |
 |---|---|---|---|---|
 | 2026-07-22 | Initialize a flexible category-based research repository. | Establish safe intake and preservation before datasets arrive. | Repository structure and metadata templates | User/Codex |

@@ -1,5 +1,33 @@
 # Data workflow
 
+## Atomic API collection
+
+API collectors fetch and validate a complete requested batch in memory before publishing it. A timeout, malformed JSON, empty required group, missing index, or invalid schema aborts the refresh. Individually empty instrument histories discovered through a broader search are excluded and are not saved as datasets. Existing dated raw batches are immutable; cleaned outputs can be rebuilt from them without network access.
+
+## Executable flow
+
+```text
+Official/manual sources
+        |
+        v
+ignored intake (manual CBI only) ---- checksum/identity inspection
+        |
+        v
+dated immutable raw snapshots
+        |
+        +---- offline parser/standardizer ----> cleaned source-level panels
+        |                                           |
+        |                                           v
+        |                                  derived calculated series
+        |                                           |
+        +-------------------> metadata/catalog/manifest/validation
+                                                    |
+                                                    v
+                                      tasks, notebooks, and analysis
+```
+
+The executable entry point is `src/workflows/update_repository_data.py`. It coordinates source-specific processors and then runs `src/workflows/validate_repository.py`. Source collectors remain separate so a failure cannot silently affect unrelated categories.
+
 The repository separates continuous data management from request-driven analysis:
 
 ```text
@@ -26,9 +54,11 @@ Derived data must identify all inputs and its generating script. Cross-category 
 
 ## Reproducibility
 
-`metadata/file_manifest.csv` records paths, sizes, and SHA-256 checksums for the canonical raw workbooks and cleaned CSVs. The temporary incoming copies are intentionally excluded from Git. Reconstruct them from `data/raw/` before running `src/common/process_cbi_tsd_exports.py`; the exact commands are in `README.md`.
+`metadata/file_manifest.csv` records paths, sizes, and SHA-256 checksums for files distributed by the repository: canonical CBI/imported-macro raw files plus cleaned and derived data. Temporary intake, generated reports, and reproducible dated TSETMC API caches are excluded from Git and from the distributed-file manifest. TSETMC raw paths remain recorded in the data catalog. The update runner reconstructs the 18 CBI intake copies from canonical raw workbooks before invoking the CBI processor and refuses a conflicting incoming file.
 
 The imported macro CSVs have a separate idempotent validator at `src/macro/register_standardized_macro_csvs.py`. Their raw layer is the exact artifact received from the other project; upstream provider downloads are unavailable for some series. Both processors preserve each other's catalog and registry entries.
+
+The TSETMC collector has two modes. `--refresh` performs network discovery and creates a new date-stamped immutable raw batch; no flag rebuilds cleaned, derived, and metadata outputs from the latest retained complete batch. `--as-of YYYY-MM-DD` selects an explicit snapshot date. A same-date refresh is refused rather than overwriting raw data.
 
 Cleaned macro data is organized by economic meaning—not by provider or processing method: prices and inflation, exchange rates, national accounts, money and credit, labor market, and interest rates. Interest rates are divided into domestic and international series where useful. New macro datasets should be placed in the closest established economic domain, with a new lowercase snake_case domain added only when none fits.
 

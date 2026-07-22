@@ -66,6 +66,39 @@ Revalidate and recreate missing cleaned copies with:
 .\.venv\Scripts\python.exe src\macro\register_standardized_macro_csvs.py
 ```
 
+## Tehran securities-market collection
+
+Housing-linked market data retrieved on 2026-07-22 are standardized in economically meaningful folders under `data/cleaned/stocks/`:
+
+- `housing_finance/mortgage_facility_certificates/`: 104 traded Bank Maskan `تسه` certificate series, exhaustively enumerated month by month;
+- `real_estate_funds/`: 7 traded real-estate investment funds;
+- `real_estate_developers/`: 13 current real-estate-sector constituents plus the official sector index;
+- `reference/`: the 124-instrument registry.
+
+The standardized long panel contains every valid instrument-day. A continuous daily market series aggregated across all `تسه` instruments traded that day is stored under `data/derived/stocks/housing_finance/`. Its primary measure is volume-weighted price, calculated as total traded value divided by total traded volume; it also includes mean, median, minimum, maximum, and daily coverage counts.
+
+The cement and tile/ceramic sector indices are under `data/cleaned/related_industries/construction_materials/market_indices/`. These are TSETMC securities-market indices, not physical production-volume indices.
+
+Canonical API responses are retained under dated folders in `data/raw/stocks/` and `data/raw/related_industries/`. Rebuild cleaned files and metadata from those raw responses with:
+
+```powershell
+python src\stocks\collect_tsetmc_housing_market.py
+```
+
+To collect a new automatically dated batch, use the repository update runner. Collection is atomic: timeouts, malformed or empty required responses abort the refresh. Search candidates with no valid traded observations are excluded, and their empty histories are not retained.
+
+```powershell
+python src\workflows\update_repository_data.py --refresh-tsetmc
+```
+
+For a fully offline rebuild of every retained collection, use `--all-local`. The runner reconstructs the ignored CBI intake copies from canonical raw workbooks, runs every processor, and finishes with repository validation:
+
+```powershell
+python src\workflows\update_repository_data.py --all-local
+```
+
+See `docs/UPDATE_RUNBOOK.md` for update modes, snapshot rules, validation, and recovery behavior.
+
 ## Adding data
 
 1. Put a newly obtained file in the appropriate `data/incoming/` category. Use `uncategorized` if its category is uncertain.
@@ -86,6 +119,7 @@ Copy-Item data\raw\housing\cbi_tsd_14050431\*.xlsx data\incoming\manually_collec
 Copy-Item data\raw\macro\cbi_tsd_14050431\*.xlsx data\incoming\manually_collected\
 .\.venv\Scripts\python.exe src\common\process_cbi_tsd_exports.py
 .\.venv\Scripts\python.exe src\macro\register_standardized_macro_csvs.py
+.\.venv\Scripts\python.exe src\stocks\collect_tsetmc_housing_market.py
 ```
 
 The copy step reconstructs the ignored temporary intake area from the canonical raw layer. The processor refuses to overwrite a differing raw file. After processing, compare `metadata/file_manifest.csv` and the catalog checksums to verify byte-level reproducibility.
@@ -95,3 +129,5 @@ The copy step reconstructs the ignored temporary intake area from the canonical 
 Commit documentation, metadata, configuration, task definitions, reusable code, and suitable small non-confidential datasets. Do not commit credentials, temporary files, confidential data, large raw data, frequently changing binaries, or reproducible generated outputs without reviewing licensing, size, confidentiality, and professor requirements.
 
 For the current private repository, the small canonical CBI raw workbooks and their cleaned CSVs are retained so a future researcher can use and reproduce the registered collection. Duplicate files in `data/incoming/` remain ignored. If repository visibility or data permissions change, review the raw and cleaned data before publishing.
+
+TSETMC uses a different distribution boundary: standardized and derived CSVs, code, and metadata are committed, while the 90 MB dated raw JSON cache remains local and ignored because it is reproducible from the official API and changes with each snapshot. Preserve a local dated cache when exact historical byte-for-byte reconstruction is required.

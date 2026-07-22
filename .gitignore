@@ -28,6 +28,11 @@ outputs/tables/*
 outputs/figures/*
 outputs/datasets/*
 outputs/reports/*
+outputs/validation/*.json
+
+# Reproducible dated TSETMC API snapshots (cleaned/derived CSVs are distributed)
+data/raw/stocks/tsetmc_housing_market_*/
+data/raw/related_industries/tsetmc_construction_materials_*/
 
 # Preserve directory placeholders
 !.gitkeep

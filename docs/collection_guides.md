@@ -1,5 +1,13 @@
 # Collection guides
 
+## TSETMC housing-linked markets
+
+Run `python src/workflows/update_repository_data.py --refresh-tsetmc` when creating a new automatically dated raw batch. For a historical/reproducibility label, add `--as-of YYYY-MM-DD`. The collector uses `algotik-tse` industry mappings to validate TSETMC sector identifiers and retrieves official JSON for instrument search, sector constituents, daily closing-price histories, and index histories. Direct official endpoints are used because the package's real-estate-fund listing returned an empty array during this collection.
+
+The collector queries every plausible exact `تسهYYMM` symbol from 1389 onward plus annual post-1400 symbols because TSETMC's broad search is capped/ranked and incomplete. Nonexistent candidate months are allowed; discovered records without valid trading histories are excluded. The collector requires non-empty mortgage-certificate, real-estate-fund, and developer groups and all three indices. It retains only instrument-days with positive closing price, volume, trade count, and trade value. Never replace an existing dated raw batch.
+
+On future runs, the search horizon is calculated from the collection date's Jalali year. A network refresh publishes nothing until the complete batch passes. Run `python src/workflows/update_repository_data.py --rebuild-tsetmc` to reproduce outputs from the latest retained raw batch without network access.
+
 Document source-specific collection instructions here as sources are approved. Include access date, URL or contact, method, licensing or confidentiality constraints, expected format, update frequency, and verification checks.
 
 ## Central Bank of Iran Time Series Database
