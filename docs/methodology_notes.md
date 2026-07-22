@@ -13,3 +13,15 @@ Non-geographic indicators—including national monetary, credit, construction, o
 No interpolation, missing-value replacement, frequency conversion, rebasing, deflation, unit conversion, outlier treatment, or statistical analysis was performed. Gray-filled source observations are marked preliminary.
 
 The substantive dataset names, labels, and units are kept exactly as written in the Excel headers. English identifiers are used only for stable machine-readable filenames and column keys; they do not replace the CBI definitions.
+
+## Imported standardized macro datasets (2026-07-22)
+
+The five received CSVs were already UTF-8-with-BOM, comma-delimited, lowercase `snake_case`, and keyed using canonical Jalali daily, monthly, or quarterly fields. Validation found complete expected monthly/quarterly sequences, unique ordered keys, no missing required values, and numeric fields that parse correctly. Because they already meet the standard, the cleaned copies are byte-identical to the received raw files.
+
+- CPI retains the total index (`1400=100`) and published month-over-month, year-over-year, and twelve-month-average inflation measures. No measure is selected for analysis here.
+- FX retains available daily free-market observations in Iranian rials per US dollar. Missing non-market days are not created; 1405 remains supplementary source coverage.
+- GDP retains quarterly real GDP at constant 1400 prices and nominal GDP at current prices, both at basic prices and in billion rials. No growth, seasonal adjustment, interpolation, or deflation is added.
+- The اخزا proxy remains an annualized percentage rate reported monthly. Upstream construction used a 1,000,000-rial face value, annual effective zero-coupon YTM per valid instrument-day, transaction-value-weighted daily aggregation, and monthly median. It is not divided by 12.
+- FEDFUNDS remains a percentage-point level. Upstream conversion approximated Jalali-month values by day-overlap weighting Gregorian monthly averages; it is not an exact daily-series Jalali average.
+
+These rules document the received datasets; they do not authorize merging, frequency conversion, feature engineering, correlation, regression, or reuse of conclusions from the other project.

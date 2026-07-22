@@ -28,6 +28,10 @@ Derived data must identify all inputs and its generating script. Cross-category 
 
 `metadata/file_manifest.csv` records paths, sizes, and SHA-256 checksums for the canonical raw workbooks and cleaned CSVs. The temporary incoming copies are intentionally excluded from Git. Reconstruct them from `data/raw/` before running `src/common/process_cbi_tsd_exports.py`; the exact commands are in `README.md`.
 
+The imported macro CSVs have a separate idempotent validator at `src/macro/register_standardized_macro_csvs.py`. Their raw layer is the exact artifact received from the other project; upstream provider downloads are unavailable for some series. Both processors preserve each other's catalog and registry entries.
+
+Cleaned macro data is organized by economic meaning—not by provider or processing method: prices and inflation, exchange rates, national accounts, money and credit, labor market, and interest rates. Interest rates are divided into domestic and international series where useful. New macro datasets should be placed in the closest established economic domain, with a new lowercase snake_case domain added only when none fits.
+
 ## Tasks
 
 Substantial professor requests get a record under `tasks/active/`. Store the objective, research question, inputs, outputs, constraints, methods, status, and related files. Move completed records to `tasks/completed/`; promote stable reusable code to `src/` only when justified.

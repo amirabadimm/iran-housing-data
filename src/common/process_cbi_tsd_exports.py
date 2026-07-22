@@ -23,6 +23,10 @@ INCOMING = ROOT / "data" / "incoming" / "manually_collected"
 SOURCE_URL = "https://tsdview.cis.cbi.ir/single-data"
 COLLECTED_DATE = "2026-07-22"
 REPORT_DATE = "1405/04/31"
+MACRO_CLEAN_DIRECTORIES = {
+    "liquidity": "money_and_credit",
+    "employment": "labor_market",
+}
 
 
 @dataclass(frozen=True)
@@ -145,6 +149,13 @@ def write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, object]]) 
         writer.writerows(rows)
 
 
+def read_csv_rows(path: Path) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
 def relative(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
@@ -254,7 +265,12 @@ def main() -> None:
                 row[label] = values.get(period, ("", False, 0, None))[0]
                 row[f"{label}_preliminary"] = values.get(period, (None, False, 0, None))[1]
             rows.append(row)
-        output = ROOT / "data" / "cleaned" / spec.category / "cbi_non_geographic" / f"{spec.dataset_id}.csv"
+        clean_directory = (
+            MACRO_CLEAN_DIRECTORIES[spec.subcategory]
+            if spec.category == "macro"
+            else "cbi_non_geographic"
+        )
+        output = ROOT / "data" / "cleaned" / spec.category / clean_directory / f"{spec.dataset_id}.csv"
         fields = ["period", "solar_hijri_year"] + (["quarter"] if spec.dataset_id.endswith("_q") else [])
         for label, _, _, _ in extracted:
             fields.extend([label, f"{label}_preliminary"])
@@ -270,14 +286,19 @@ def main() -> None:
             variable_rows.append({"dataset_id": spec.dataset_id, "variable_name": label, "variable_label": meta["source_label_fa"], "description": meta["source_description_fa"], "data_type": "numeric", "unit": meta["source_unit_fa"], "language": "Persian", "allowed_values": "", "missing_value_codes": "blank", "source_definition": meta["source_description_fa"], "notes": "Name, label, unit, and values are preserved directly from the CBI Excel export."})
         cleaning_log.append({"cleaning_id": f"clean_{spec.dataset_id}", "dataset_id": spec.dataset_id, "date": COLLECTED_DATE, "input_path": "; ".join(relative(raw_paths[r.filename]) for r in refs), "output_path": relative(output), "script": "src/common/process_cbi_tsd_exports.py", "transformation": "Extracted source series; normalized Solar Hijri period; retained years >=1370; preserved values, missingness, source units, and preliminary flags.", "reason": "User-requested standardization", "rows_before": len(periods), "rows_after": len(rows), "columns_before": len(refs), "columns_after": len(fields), "performed_by": "Codex", "review_status": "completed", "notes": "No geographic counterpart existed in the supplied files; none was fabricated."})
 
+    catalog = [row for row in read_csv_rows(ROOT / "metadata" / "data_catalog.csv") if not row.get("dataset_id", "").startswith("cbi_")] + catalog
+    variable_rows = [row for row in read_csv_rows(ROOT / "metadata" / "variable_dictionary.csv") if not row.get("dataset_id", "").startswith("cbi_")] + variable_rows
+    cleaning_log = [row for row in read_csv_rows(ROOT / "metadata" / "cleaning_log.csv") if not row.get("dataset_id", "").startswith("cbi_")] + cleaning_log
+
     catalog_fields = "dataset_id,dataset_name,topic,category,subcategory,category_status,description,source_organization,source_url,collection_method,date_collected,original_filename,stored_filename,raw_path,cleaned_path,derived_path,file_format,sheet_names,time_coverage_start,time_coverage_end,frequency,geographic_coverage,unit,language,access_status,cleaning_status,validation_status,current_use,related_task,confidentiality,checksum_sha256,notes".split(",")
     write_csv(ROOT / "metadata" / "data_catalog.csv", catalog_fields, catalog)
     variable_fields = "dataset_id,variable_name,variable_label,description,data_type,unit,language,allowed_values,missing_value_codes,source_definition,notes".split(",")
     write_csv(ROOT / "metadata" / "variable_dictionary.csv", variable_fields, variable_rows)
     cleaning_fields = "cleaning_id,dataset_id,date,input_path,output_path,script,transformation,reason,rows_before,rows_after,columns_before,columns_after,performed_by,review_status,notes".split(",")
     write_csv(ROOT / "metadata" / "cleaning_log.csv", cleaning_fields, cleaning_log)
-    source_row = [{"source_id": "cbi_tsd", "source_organization": "Central Bank of the Islamic Republic of Iran", "source_name": "Time Series Database (TSD)", "source_url": SOURCE_URL, "access_method": "manual Excel export", "date_accessed": COLLECTED_DATE, "license": "not stated in supplied workbooks; requires review", "access_status": "public website", "contact": "", "notes": f"18 Excel exports generated {REPORT_DATE}; website timed out during automated verification on {COLLECTED_DATE}."}]
-    write_csv(ROOT / "metadata" / "source_registry.csv", "source_id,source_organization,source_name,source_url,access_method,date_accessed,license,access_status,contact,notes".split(","), source_row)
+    source_rows = [row for row in read_csv_rows(ROOT / "metadata" / "source_registry.csv") if row.get("source_id") != "cbi_tsd"]
+    source_rows.append({"source_id": "cbi_tsd", "source_organization": "Central Bank of the Islamic Republic of Iran", "source_name": "Time Series Database (TSD)", "source_url": SOURCE_URL, "access_method": "manual Excel export", "date_accessed": COLLECTED_DATE, "license": "not stated in supplied workbooks; requires review", "access_status": "public website", "contact": "", "notes": f"18 Excel exports generated {REPORT_DATE}; website timed out during automated verification on {COLLECTED_DATE}."})
+    write_csv(ROOT / "metadata" / "source_registry.csv", "source_id,source_organization,source_name,source_url,access_method,date_accessed,license,access_status,contact,notes".split(","), source_rows)
 
     inventory_rows: list[dict[str, object]] = []
     for source in sorted(INCOMING.glob("*.xlsx")):
@@ -311,7 +332,7 @@ def main() -> None:
     inventory_fields = ["source_file", "sheet_name", "report_title_fa", "report_date_solar_hijri", "reported_range_fa", "frequency_fa", "column_number", "source_label_fa", "source_dataset_name_fa", "source_unit_fa", "observation_count", "first_source_period", "last_source_period", "preliminary_observation_count", "status"]
     write_csv(ROOT / "metadata" / "excel_series_inventory.csv", inventory_fields, inventory_rows)
 
-    issues = [
+    issues = [row for row in read_csv_rows(ROOT / "metadata" / "data_issues.csv") if not row.get("issue_id", "").startswith("issue_cbi_")] + [
         {"issue_id": "issue_cbi_empty_construction_services_index", "dataset_id": "", "date_identified": COLLECTED_DATE, "issue_type": "empty_source_series", "description": "Column J in TSD-Rep-14050431 (15).xlsx is labeled construction services price index (1400=100) but contains no observations.", "severity": "medium", "status": "open", "resolution": "Re-export this series from CBI TSD if it is required.", "related_file": "data/raw/housing/cbi_tsd_14050431/TSD-Rep-14050431 (15).xlsx", "notes": "Not registered as an available cleaned dataset because there are zero values."},
         {"issue_id": "issue_cbi_empty_bank_maskan_quarterly_count", "dataset_id": "", "date_identified": COLLECTED_DATE, "issue_type": "empty_source_series", "description": "Column C in TSD-Rep-14050431 (16).xlsx is labeled as a Bank Maskan loan-count series but has no unit and no observations.", "severity": "medium", "status": "open", "resolution": "Re-export the quarterly series from CBI TSD if it is required; the separate annual export remains available.", "related_file": "data/raw/housing/cbi_tsd_14050431/TSD-Rep-14050431 (16).xlsx", "notes": "Not registered as an available cleaned dataset because there are zero values."},
     ]
@@ -320,7 +341,7 @@ def main() -> None:
     manifest_rows: list[dict[str, object]] = []
     for layer in ("raw", "cleaned"):
         for path in sorted((ROOT / "data" / layer).glob("**/*")):
-            if not path.is_file() or path.name == ".gitkeep":
+            if not path.is_file() or path.name in {".gitkeep", "README.md"}:
                 continue
             manifest_rows.append({
                 "layer": layer,
@@ -336,11 +357,11 @@ def main() -> None:
         manifest_rows,
     )
 
-    assert len(catalog) == 22
+    assert sum(row["dataset_id"].startswith("cbi_") for row in catalog) == 22
     assert len(list((ROOT / "data" / "raw").glob("**/*.xlsx"))) >= 18
     assert all(row["time_coverage_start"] >= "1370" for row in catalog)
-    assert len(manifest_rows) == 40
-    print(f"Registered and cleaned {len(catalog)} datasets from 18 raw workbooks.")
+    assert len(manifest_rows) >= 40
+    print("Registered and cleaned 22 CBI datasets from 18 raw workbooks; preserved other registered datasets.")
 
 
 if __name__ == "__main__":

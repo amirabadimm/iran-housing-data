@@ -34,7 +34,7 @@ The first registered collection contains 18 manually exported Excel workbooks fr
 - Unchanged copies are stored under `data/raw/housing/cbi_tsd_14050431/` and `data/raw/macro/cbi_tsd_14050431/`.
 - Thirteen housing indicators are standardized under `data/cleaned/housing/cbi_urban_tehran_pairs/`. Each CSV keeps all-urban and Tehran observations side by side by quarter.
 - Seven housing datasets without an all-urban/Tehran pair are under `data/cleaned/housing/cbi_non_geographic/`, including one combined dataset for large-, medium-, and small-city rent indices.
-- Liquidity and urban unemployment are under `data/cleaned/macro/cbi_non_geographic/`.
+- Macro datasets are organized by economic domain under `data/cleaned/macro/`, independent of their source or processing history.
 - Cleaned coverage begins no earlier than 1370 and ends at each source series' latest actual observation. Most quarterly housing series currently end at 1404-Q2; this is not extended with estimated values.
 - Gray source cells are retained as Boolean preliminary flags. No values were interpolated, aggregated, inflation-adjusted, or converted to different units.
 
@@ -47,6 +47,24 @@ python src\common\process_cbi_tsd_exports.py
 See `metadata/data_catalog.csv` for dataset-level coverage and provenance, `metadata/variable_dictionary.csv` for variables, and `metadata/cleaning_log.csv` for transformations.
 
 The Excel workbooks—not filenames, earlier documentation, or translated labels—are the authority for dataset identity. Exact Persian report titles, dataset paths, labels, units, reported ranges, frequencies, and observation counts are recorded in `metadata/excel_series_inventory.csv`. Cleaned values retain those source definitions without English renaming.
+
+## Imported standardized macro collection
+
+Five standardized macro CSVs were received from another user project on 2026-07-22:
+
+- Iran total CPI and inflation, monthly, 1399-01 through 1404-12;
+- free-market USD/IRR rate, daily available-market observations, 1399/01/05 through 1405/04/21;
+- Iran real and nominal GDP at basic prices, quarterly, 1399-Q1 through 1404-Q4;
+- annualized اخزا risk-free-rate proxy, monthly, 1399-01 through 1404-12;
+- US Federal Funds Effective Rate aligned approximately to Jalali months, 1399-01 through 1404-12.
+
+The received files already conformed to the documented CSV standard. They are preserved exactly under `data/raw/macro/external_data_analysis_20260722/` and copied byte-for-byte into the appropriate economic-domain folders under `data/cleaned/macro/` after validation. No value, date, key, field, unit, or missing value was changed. See the catalog and `docs/methodology_notes.md` for upstream provenance limitations.
+
+Revalidate and recreate missing cleaned copies with:
+
+```powershell
+.\.venv\Scripts\python.exe src\macro\register_standardized_macro_csvs.py
+```
 
 ## Adding data
 
@@ -67,6 +85,7 @@ python -m venv .venv
 Copy-Item data\raw\housing\cbi_tsd_14050431\*.xlsx data\incoming\manually_collected\
 Copy-Item data\raw\macro\cbi_tsd_14050431\*.xlsx data\incoming\manually_collected\
 .\.venv\Scripts\python.exe src\common\process_cbi_tsd_exports.py
+.\.venv\Scripts\python.exe src\macro\register_standardized_macro_csvs.py
 ```
 
 The copy step reconstructs the ignored temporary intake area from the canonical raw layer. The processor refuses to overwrite a differing raw file. After processing, compare `metadata/file_manifest.csv` and the catalog checksums to verify byte-level reproducibility.
