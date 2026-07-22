@@ -1,0 +1,2 @@
+﻿source_id,source_organization,source_name,source_url,access_method,date_accessed,license,access_status,contact,notes
+cbi_tsd,Central Bank of the Islamic Republic of Iran,Time Series Database (TSD),https://tsdview.cis.cbi.ir/single-data,manual Excel export,2026-07-22,not stated in supplied workbooks; requires review,public website,,18 Excel exports generated 1405/04/31; website timed out during automated verification on 2026-07-22.
