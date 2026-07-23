@@ -36,6 +36,7 @@ The registered collection contains 19 manually exported Excel workbooks from the
 - Seven housing datasets without an all-urban/Tehran pair are under `data/cleaned/housing/cbi_non_geographic/`, including one combined dataset for large-, medium-, and small-city rent indices.
 - Macro datasets are organized by economic domain under `data/cleaned/macro/`, independent of their source or processing history.
 - The 1405/05/01 workbook adds six annual national-accounts series for 1395–1402: private/public gross fixed capital formation in buildings and real-estate value added, each at current and constant-1400 prices. The 1402 values are preliminary.
+- Derived inflation outputs under `data/derived/housing/inflation/` include a transparent CBI-only quarterly calculation and a preferred all-source panel. The all-source panel combines CBI/TSD index changes with SCI-published Tehran dwelling/rent/land changes, urban housing/rent CPI inflation, and Tehran residential construction-input inflation while keeping source definitions and frequencies separate.
 - Cleaned coverage begins no earlier than 1370 and ends at each source series' latest actual observation. Most quarterly housing series currently end at 1404-Q2; this is not extended with estimated values.
 - Gray source cells are retained as Boolean preliminary flags. No values were interpolated, aggregated, inflation-adjusted, or converted to different units.
 

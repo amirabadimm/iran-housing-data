@@ -48,6 +48,18 @@ The later-supplied `USD2Rials-1.csv` is preserved byte-for-byte and contains 13,
 
 Cleaning normalizes Gregorian dates to `YYYY-MM-DD`, splits the Jalali key into year/month/day fields, removes numeric thousands separators, and parses the rate as Iranian rials per US dollar. All 1,815 observations overlapping the previously retained 1399–1405 standardized raw file agree exactly. No interpolation, calendar filling, averaging, unit conversion, or conflict resolution was required. The historical cleaned filename ending in `1399_1405` is retained for downstream compatibility even though catalogued coverage now starts in 1360.
 
+## Derived housing and rent inflation (2026-07-23)
+
+Quarter-over-quarter inflation is calculated as `100 × (index_t / index_t-1 − 1)`, and year-over-year inflation as `100 × (index_t / index_t-4 − 1)`. The inputs are the registered CBI quarterly rent indices for Tehran, all urban areas, and large/medium/small-city groups, plus the Tehran and all-urban land-price indices.
+
+The land-price change is labeled `land_price_housing_proxy`; it is not a general dwelling-sale CPI. City-size groups retain the exact CBI labels and must not be interpreted as mutually exclusive “other cities outside Tehran,” because no exclusion weights or Tehran-free aggregate were published. Initial unavailable lags remain blank. No interpolation, smoothing, seasonal adjustment, rebasing, weighting, or annualization is performed.
+
+## All-source housing and rent inflation panel (2026-07-23)
+
+The preferred long-form panel combines the calculated CBI rates above with published SCI measures from four relevant datasets: Tehran dwelling-sale, land, and rent changes by municipal region; national urban housing/rent/housing-utilities/maintenance CPI inflation; annual inflation for those CPI components; and Tehran residential construction-input inflation by input group. Provider, source dataset, original measure, frequency, geography, component, and published-versus-calculated status remain explicit.
+
+All registered files were reviewed for relevance. SCI provincial CPI is excluded because it contains total CPI by province but no housing component. The historical total CPI file is likewise not housing-specific. The selected building-material file is a single 1404-Q4 price snapshot and cannot support an inflation rate without a comparison period. The SCI legacy construction-input file contains indices but is superseded for this purpose by the base-1402 dataset, which already publishes the corresponding change measures. No unlike frequencies or definitions are merged into a synthetic rate.
+
 ## SCI statistical-information workbooks (2026-07-23)
 
 All 58 sheets in eleven supplied Persian workbooks are inventoried. Published tables are normalized to long form while preserving Solar Hijri periods, Persian categories, geographic level, source sheet/file, units, index base years, and explicit missing markers. No interpolation, aggregation, inflation adjustment, unit conversion, or frequency conversion is performed.

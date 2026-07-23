@@ -61,6 +61,7 @@ def main() -> None:
     if args.all_local or args.rebuild_cbi:
         hydrate_cbi_incoming()
         run("src/common/process_cbi_tsd_exports.py")
+        run("src/housing/derive_housing_rent_inflation.py")
     if args.all_local or args.rebuild_imported_macro:
         run("src/macro/register_standardized_macro_csvs.py")
         run("src/macro/process_usd_free_market_history.py")
@@ -76,6 +77,9 @@ def main() -> None:
         if args.as_of:
             command += ["--as-of", args.as_of]
         run(*command)
+
+    if args.all_local or args.rebuild_cbi or args.rebuild_sci:
+        run("src/housing/derive_all_source_housing_rent_inflation.py")
 
     run("src/workflows/validate_repository.py", "--report", args.report)
 

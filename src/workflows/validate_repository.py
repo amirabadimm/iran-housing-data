@@ -95,6 +95,65 @@ def validate() -> dict[str, object]:
     if any(float(item["usd_free_market_rate_irr"]) <= 0 for item in fx_rows):
         errors.append("Extended USD/IRR series contains a non-positive value")
 
+    housing_inflation_path = ROOT / "data" / "derived" / "housing" / "inflation" / "cbi_housing_rent_inflation_quarterly.csv"
+    housing_inflation_rows = rows(housing_inflation_path)
+    housing_inflation_keys = [
+        (item["period"], item["indicator"], item["geography_code"])
+        for item in housing_inflation_rows
+    ]
+    if len(housing_inflation_rows) != 910 or len(housing_inflation_keys) != len(set(housing_inflation_keys)):
+        errors.append("Housing/rent inflation dataset must contain 910 unique period/indicator/geography rows")
+    if sum(item["qoq_inflation_pct"] == "" for item in housing_inflation_rows) != 7:
+        errors.append("Housing/rent inflation dataset must have one unavailable quarterly lag per series")
+    if sum(item["yoy_inflation_pct"] == "" for item in housing_inflation_rows) != 28:
+        errors.append("Housing/rent inflation dataset must have four unavailable annual lags per series")
+    by_series: dict[tuple[str, str], list[dict[str, str]]] = {}
+    for item in housing_inflation_rows:
+        by_series.setdefault((item["indicator"], item["geography_code"]), []).append(item)
+    for series_rows in by_series.values():
+        series_rows.sort(key=lambda item: (int(item["solar_hijri_year"]), int(item["quarter"])))
+        for index, item in enumerate(series_rows):
+            value = float(item["source_index_value"])
+            if index >= 1:
+                expected = (value / float(series_rows[index - 1]["source_index_value"]) - 1) * 100
+                if abs(float(item["qoq_inflation_pct"]) - expected) > 1e-10:
+                    errors.append(f"Housing/rent quarterly inflation mismatch: {item['period']}")
+                    break
+            if index >= 4:
+                expected = (value / float(series_rows[index - 4]["source_index_value"]) - 1) * 100
+                if abs(float(item["yoy_inflation_pct"]) - expected) > 1e-10:
+                    errors.append(f"Housing/rent annual inflation mismatch: {item['period']}")
+                    break
+
+    all_source_path = ROOT / "data" / "derived" / "housing" / "inflation" / "housing_rent_inflation_all_sources.csv"
+    all_source_rows = rows(all_source_path)
+    provider_counts: dict[str, int] = {}
+    source_counts: dict[str, int] = {}
+    for item in all_source_rows:
+        provider_counts[item["provider"]] = provider_counts.get(item["provider"], 0) + 1
+        source_counts[item["source_dataset_id"]] = source_counts.get(item["source_dataset_id"], 0) + 1
+        try:
+            float(item["inflation_pct"])
+        except ValueError:
+            errors.append("All-source housing/rent inflation contains a non-numeric rate")
+            break
+    expected_source_counts = {
+        "cbi_hsg_land_price_index_q": 430,
+        "cbi_hsg_rent_index_by_city_size_q": 813,
+        "cbi_hsg_rent_index_q": 542,
+        "sci_tehran_building_input_indices_base1402": 2756,
+        "sci_tehran_housing_market_quarterly_1388_1399": 5598,
+        "sci_urban_cpi_national_annual_by_group": 92,
+        "sci_urban_cpi_national_monthly_by_group": 3344,
+    }
+    if len(all_source_rows) != 13575 or source_counts != expected_source_counts:
+        errors.append("All-source housing/rent inflation source coverage or row counts changed")
+    if provider_counts != {
+        "Central Bank of the Islamic Republic of Iran": 1785,
+        "Statistical Center of Iran": 11790,
+    }:
+        errors.append("All-source housing/rent inflation must include both CBI and SCI")
+
     cleaned = ROOT / "data" / "cleaned" / "stocks" / "housing_finance" / "mortgage_facility_certificates" / "tsetmc_bank_maskan_mortgage_certificates_daily.csv"
     derived = ROOT / "data" / "derived" / "stocks" / "housing_finance" / "tsetmc_bank_maskan_tese_continuous_daily.csv"
     tese_rows = rows(cleaned)
@@ -125,6 +184,10 @@ def validate() -> dict[str, object]:
         "cbi_inventory_workbooks": len({item["source_file"] for item in cbi_inventory}),
         "usd_irr_rows": len(fx_rows),
         "usd_irr_coverage": [fx_keys[0], fx_keys[-1]] if fx_keys else [],
+        "housing_rent_inflation_rows": len(housing_inflation_rows),
+        "housing_rent_inflation_series": len(by_series),
+        "all_source_housing_rent_inflation_rows": len(all_source_rows),
+        "all_source_housing_rent_inflation_providers": provider_counts,
         "sci_datasets": len(actual_sci),
         "sci_inventory_sheets": len(sci_inventory),
         "tese_cleaned_rows": len(tese_rows),
