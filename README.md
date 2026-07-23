@@ -29,12 +29,13 @@ The initial categories are `macro`, `housing`, `stocks`, and `related_industries
 
 ## Current CBI collection
 
-The first registered collection contains 18 manually exported Excel workbooks from the Central Bank of Iran [Time Series Database](https://tsdview.cis.cbi.ir/single-data), generated on Solar Hijri date 1405/04/31.
+The registered collection contains 19 manually exported Excel workbooks from the Central Bank of Iran [Time Series Database](https://tsdview.cis.cbi.ir/single-data): 18 generated on Solar Hijri date 1405/04/31 and one annual national-accounts export generated on 1405/05/01.
 
 - Unchanged copies are stored under `data/raw/housing/cbi_tsd_14050431/` and `data/raw/macro/cbi_tsd_14050431/`.
 - Thirteen housing indicators are standardized under `data/cleaned/housing/cbi_urban_tehran_pairs/`. Each CSV keeps all-urban and Tehran observations side by side by quarter.
 - Seven housing datasets without an all-urban/Tehran pair are under `data/cleaned/housing/cbi_non_geographic/`, including one combined dataset for large-, medium-, and small-city rent indices.
 - Macro datasets are organized by economic domain under `data/cleaned/macro/`, independent of their source or processing history.
+- The 1405/05/01 workbook adds six annual national-accounts series for 1395–1402: private/public gross fixed capital formation in buildings and real-estate value added, each at current and constant-1400 prices. The 1402 values are preliminary.
 - Cleaned coverage begins no earlier than 1370 and ends at each source series' latest actual observation. Most quarterly housing series currently end at 1404-Q2; this is not extended with estimated values.
 - Gray source cells are retained as Boolean preliminary flags. No values were interpolated, aggregated, inflation-adjusted, or converted to different units.
 
@@ -57,17 +58,17 @@ Eleven Persian SCI workbooks from the official [statistical-information portal](
 Five standardized macro CSVs were received from another user project on 2026-07-22:
 
 - Iran total CPI and inflation, monthly, 1399-01 through 1404-12;
-- free-market USD/IRR rate, daily available-market observations, 1399/01/05 through 1405/04/21;
+- free-market USD/IRR rate, daily available-market observations, 1360/07/07 through 1405/04/21;
 - Iran real and nominal GDP at basic prices, quarterly, 1399-Q1 through 1404-Q4;
 - annualized اخزا risk-free-rate proxy, monthly, 1399-01 through 1404-12;
 - US Federal Funds Effective Rate aligned approximately to Jalali months, 1399-01 through 1404-12.
 
-The received files already conformed to the documented CSV standard. They are preserved exactly under `data/raw/macro/external_data_analysis_20260722/` and copied byte-for-byte into the appropriate economic-domain folders under `data/cleaned/macro/` after validation. No value, date, key, field, unit, or missing value was changed. See the catalog and `docs/methodology_notes.md` for upstream provenance limitations.
+The five originally received standardized files are preserved exactly under `data/raw/macro/external_data_analysis_20260722/`. Four remain byte-identical to their cleaned copies. The later-supplied `USD2Rials-1.csv` is preserved under `data/raw/macro/dlearn_tgju_20260723/` and is now the canonical source for the extended cleaned FX series. See the catalog and `docs/methodology_notes.md` for provenance and transformation details.
 
 Revalidate and recreate missing cleaned copies with:
 
 ```powershell
-.\.venv\Scripts\python.exe src\macro\register_standardized_macro_csvs.py
+.\.venv\Scripts\python.exe src\workflows\update_repository_data.py --rebuild-imported-macro
 ```
 
 ## Tehran securities-market collection
@@ -121,6 +122,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 Copy-Item data\raw\housing\cbi_tsd_14050431\*.xlsx data\incoming\manually_collected\
 Copy-Item data\raw\macro\cbi_tsd_14050431\*.xlsx data\incoming\manually_collected\
+Copy-Item data\raw\macro\cbi_tsd_14050501\*.xlsx data\incoming\manually_collected\
 .\.venv\Scripts\python.exe src\common\process_cbi_tsd_exports.py
 .\.venv\Scripts\python.exe src\macro\register_standardized_macro_csvs.py
 .\.venv\Scripts\python.exe src\stocks\collect_tsetmc_housing_market.py

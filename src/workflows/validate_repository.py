@@ -63,6 +63,38 @@ def validate() -> dict[str, object]:
     if len(sci_inventory) != 58 or len({item["source_file"] for item in sci_inventory}) != 11:
         errors.append("SCI inventory must contain 58 sheets from 11 workbooks")
 
+    expected_cbi_national_accounts = {
+        "cbi_macro_building_gfcf_private_current_a",
+        "cbi_macro_building_gfcf_public_current_a",
+        "cbi_macro_real_estate_value_added_current_a",
+        "cbi_macro_building_gfcf_private_constant_1400_a",
+        "cbi_macro_building_gfcf_public_constant_1400_a",
+        "cbi_macro_real_estate_value_added_constant_1400_a",
+    }
+    actual_cbi = {item["dataset_id"] for item in catalog if item["dataset_id"].startswith("cbi_")}
+    if len(actual_cbi) != 28 or not expected_cbi_national_accounts.issubset(actual_cbi):
+        errors.append("CBI catalog must contain 28 datasets including the six annual national-accounts series")
+    cbi_inventory = rows(ROOT / "metadata" / "excel_series_inventory.csv")
+    national_accounts_inventory = [
+        item for item in cbi_inventory if item["source_file"] == "TSD-Rep-14050501.xlsx"
+    ]
+    if len({item["source_file"] for item in cbi_inventory}) != 19:
+        errors.append("CBI inventory must cover 19 workbooks")
+    if len(national_accounts_inventory) != 12:
+        errors.append("New CBI annual workbook must inventory all 12 labeled data columns")
+    elif sum(item["status"] == "available" for item in national_accounts_inventory) != 6:
+        errors.append("New CBI annual workbook must contain six available and six empty series")
+
+    fx_path = ROOT / "data" / "cleaned" / "macro" / "exchange_rates" / "iran_daily_usd_free_market_rate_1399_1405.csv"
+    fx_rows = rows(fx_path)
+    fx_keys = [item["jalali_date"] for item in fx_rows]
+    if len(fx_rows) != 13042 or len(fx_keys) != len(set(fx_keys)):
+        errors.append("Extended USD/IRR series must contain 13,042 unique daily observations")
+    elif fx_keys[0] != "1360/07/07" or fx_keys[-1] != "1405/04/21":
+        errors.append("Extended USD/IRR coverage must be 1360/07/07 through 1405/04/21")
+    if any(float(item["usd_free_market_rate_irr"]) <= 0 for item in fx_rows):
+        errors.append("Extended USD/IRR series contains a non-positive value")
+
     cleaned = ROOT / "data" / "cleaned" / "stocks" / "housing_finance" / "mortgage_facility_certificates" / "tsetmc_bank_maskan_mortgage_certificates_daily.csv"
     derived = ROOT / "data" / "derived" / "stocks" / "housing_finance" / "tsetmc_bank_maskan_tese_continuous_daily.csv"
     tese_rows = rows(cleaned)
@@ -89,6 +121,10 @@ def validate() -> dict[str, object]:
         "errors": errors,
         "manifest_files": len(manifest),
         "catalog_datasets": len(catalog),
+        "cbi_datasets": len(actual_cbi),
+        "cbi_inventory_workbooks": len({item["source_file"] for item in cbi_inventory}),
+        "usd_irr_rows": len(fx_rows),
+        "usd_irr_coverage": [fx_keys[0], fx_keys[-1]] if fx_keys else [],
         "sci_datasets": len(actual_sci),
         "sci_inventory_sheets": len(sci_inventory),
         "tese_cleaned_rows": len(tese_rows),

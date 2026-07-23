@@ -1,10 +1,10 @@
 # Project status
 
-Latest update: 2026-07-22
+Latest update: 2026-07-23
 
 ## Available datasets
 
-Forty-three datasets are registered: 25 housing, 11 macro, 6 stocks, and 1 related-industries dataset. Thirteen CBI housing datasets contain all-urban and Tehran values paired by period. The SCI collection adds nine datasets from eleven complete Persian workbooks: building permits, Tehran housing prices/rents/transactions, Tehran construction-input indices/material prices, and urban CPI. The securities collection covers 124 validated instruments, including 104 traded `تسه` series, and three market-sector indices. The sixth stocks dataset is a derived continuous daily `تسه` series.
+Forty-nine datasets are registered: 25 housing, 17 macro, 6 stocks, and 1 related-industries dataset. Thirteen CBI housing datasets contain all-urban and Tehran values paired by period. The SCI collection adds nine datasets from eleven complete Persian workbooks: building permits, Tehran housing prices/rents/transactions, Tehran construction-input indices/material prices, and urban CPI. Six CBI annual national-accounts datasets cover building investment and real-estate value added at current and constant-1400 prices. The securities collection covers 124 validated instruments, including 104 traded `تسه` series, and three market-sector indices. The sixth stocks dataset is a derived continuous daily `تسه` series.
 
 ## Awaiting review
 
@@ -18,7 +18,9 @@ Available under `data/cleaned/housing/`, `data/cleaned/macro/`, `data/cleaned/st
 
 Two labeled source columns contain no observations: the construction-services price index in `TSD-Rep-14050431 (15).xlsx` and a quarterly Bank Maskan loan-count placeholder in `TSD-Rep-14050431 (16).xlsx`. They were not registered as available datasets. See `metadata/data_issues.csv`.
 
-Imported macro limitations are also recorded there: pending SCI provenance verification and missing upstream raw inputs for three previously processed series.
+Six labeled columns in `TSD-Rep-14050501.xlsx` also contain no observations. All are retained in the Excel inventory, while only the six populated series were standardized.
+
+Imported macro limitations are also recorded there: pending SCI provenance verification and missing upstream raw inputs for the اخزا and Federal Funds series. The previously missing `USD2Rials-1.csv` source is now retained and extends the cleaned FX history to 1360/07/07.
 
 The algotik/TSETMC real-estate-fund listing endpoint returned an empty array, so the validated official instrument-search endpoint was used. One empty legacy `تسه` search candidate was excluded without retaining its empty history. See `metadata/data_issues.csv`.
 
@@ -35,6 +37,10 @@ None recorded.
 `collect_tsetmc_housing_market_20260722`: exhaustively enumerated monthly `تسه` symbols, preserved official non-empty TSETMC responses, created 6 standardized source-level datasets, and created 1 derived continuous `تسه` series.
 
 `process_sci_statistical_information_20260723`: preserved 11 complete SCI workbooks, inventoried 58 sheets, and created 9 standardized datasets containing 99,114 rows.
+
+`cbi_tsd_national_accounts_20260723`: preserved one annual CBI workbook, inventoried all 12 labeled data columns, and created 6 standardized national-accounts datasets.
+
+`extend_usd_free_market_history_20260723`: preserved the complete 13,043-row USD/IRR source, removed one exact duplicate in the cleaned layer, verified all 1,815 prior overlapping values, and extended cleaned coverage to 13,042 unique observations from 1360/07/07 through 1405/04/21.
 
 ## Upcoming collection needs
 

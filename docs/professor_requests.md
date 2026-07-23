@@ -1,3 +1,3 @@
 # Professor requests
 
-No professor-originated requests have been recorded. The user-requested tasks `cbi_tsd_bulk_standardization_20260722` and `import_standardized_macro_20260722` are recorded under `tasks/completed/`.
+No professor-originated requests have been recorded. User-requested data-management tasks, including `cbi_tsd_bulk_standardization_20260722`, `import_standardized_macro_20260722`, `collect_tsetmc_housing_market_20260722`, `process_sci_statistical_information_20260723`, `cbi_tsd_national_accounts_20260723`, and `extend_usd_free_market_history_20260723`, are recorded under `tasks/completed/`.

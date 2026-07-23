@@ -24,6 +24,12 @@ No interpolation, missing-value replacement, frequency conversion, rebasing, def
 
 The substantive dataset names, labels, and units are kept exactly as written in the Excel headers. English identifiers are used only for stable machine-readable filenames and column keys; they do not replace the CBI definitions.
 
+## CBI annual national accounts (2026-07-23)
+
+The annual CBI export generated 1405/05/01 contains twelve labeled data columns for 1393–1403. Six columns contain eight observations each, covering 1395–1402: private- and public-sector gross fixed capital formation in buildings and real-estate-activities value added, each in current prices and constant 1400 prices. All source units are billion rials. The 1402 observations are gray-filled and retained with `value_preliminary=True`.
+
+Six other labeled columns contain no observations and are recorded as empty in `metadata/excel_series_inventory.csv`; no empty cleaned dataset was created. No missing years were filled, and no aggregation, deflation, rebasing, growth calculation, or reconciliation between current- and constant-price series was performed.
+
 ## Imported standardized macro datasets (2026-07-22)
 
 The five received CSVs were already UTF-8-with-BOM, comma-delimited, lowercase `snake_case`, and keyed using canonical Jalali daily, monthly, or quarterly fields. Validation found complete expected monthly/quarterly sequences, unique ordered keys, no missing required values, and numeric fields that parse correctly. Because they already meet the standard, the cleaned copies are byte-identical to the received raw files.
@@ -35,6 +41,12 @@ The five received CSVs were already UTF-8-with-BOM, comma-delimited, lowercase `
 - FEDFUNDS remains a percentage-point level. Upstream conversion approximated Jalali-month values by day-overlap weighting Gregorian monthly averages; it is not an exact daily-series Jalali average.
 
 These rules document the received datasets; they do not authorize merging, frequency conversion, feature engineering, correlation, regression, or reuse of conclusions from the other project.
+
+## Extended USD/IRR history (2026-07-23)
+
+The later-supplied `USD2Rials-1.csv` is preserved byte-for-byte and contains 13,043 source rows from 1360/07/07 through 1405/04/21. Source labels transition from `bourseview` (8,817 rows through 1390/09/03) to `tgju` (4,226 rows from 1390/09/05). The file contains one exact duplicate for 1404/10/09; the raw file retains both rows and the cleaned unique-date series retains one.
+
+Cleaning normalizes Gregorian dates to `YYYY-MM-DD`, splits the Jalali key into year/month/day fields, removes numeric thousands separators, and parses the rate as Iranian rials per US dollar. All 1,815 observations overlapping the previously retained 1399–1405 standardized raw file agree exactly. No interpolation, calendar filling, averaging, unit conversion, or conflict resolution was required. The historical cleaned filename ending in `1399_1405` is retained for downstream compatibility even though catalogued coverage now starts in 1360.
 
 ## SCI statistical-information workbooks (2026-07-23)
 

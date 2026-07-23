@@ -71,25 +71,6 @@ SPECS = (
         "Already standardized upstream. Official table identity and individual values remain pending independent verification; no observation was changed here.",
     ),
     DatasetSpec(
-        "macro_iran_usd_free_market_daily_1399_1405",
-        "iran_daily_usd_free_market_rate_1399_1405.csv",
-        "Iran free-market USD exchange rate",
-        "exchange_rate",
-        "exchange_rates",
-        "daily",
-        "jalali_date",
-        "1399/01/05",
-        "1405/04/21",
-        1815,
-        ("jalali_date", "gregorian_date", "jalali_year", "jalali_month", "jalali_day", "source", "usd_free_market_rate_irr"),
-        ("jalali_year", "jalali_month", "jalali_day", "usd_free_market_rate_irr"),
-        "Iranian rial per US dollar",
-        "D-Learn archive; underlying record label TGJU",
-        "https://d-learn.ir/p/usd-price/",
-        "Iran free market",
-        "Received file is an upstream-cleaned subset of USD2Rials-1.csv: 1 exact duplicate had been removed and dates/number formatting standardized. Original upstream download is not present here.",
-    ),
-    DatasetSpec(
         "macro_iran_gdp_quarterly_nominal_real_1399_1404",
         "iran_gdp_quarterly_nominal_real_1399_1404.csv",
         "Iran quarterly real and nominal GDP at basic prices",
@@ -350,7 +331,6 @@ def main() -> None:
     replace_dataset_rows(ROOT / "metadata" / "cleaning_log.csv", CLEANING_FIELDS, cleaning_rows)
 
     source_rows = [
-        {"source_id": "dlearn_tgju_fx", "source_organization": "D-Learn archive; underlying label TGJU", "source_name": "Iran free-market USD price archive", "source_url": "https://d-learn.ir/p/usd-price/", "access_method": "standardized CSV received from user's other project", "date_accessed": COLLECTED_DATE, "license": "not documented; requires review", "access_status": "upstream-cleaned file received", "contact": "", "notes": "Original USD2Rials-1.csv is not retained in this repository."},
         {"source_id": "sci_cpi", "source_organization": "Statistical Center of Iran", "source_name": "Total CPI and inflation tables", "source_url": "https://amar.org.ir/statistical-information/statid/28579", "access_method": "standardized CSV received from user's other project", "date_accessed": COLLECTED_DATE, "license": "not documented; requires review", "access_status": "provenance pending independent verification", "contact": "", "notes": "User-reported official table identities; page/value verification was not completed upstream."},
         {"source_id": "sci_gdp", "source_organization": "Statistical Center of Iran", "source_name": "Economic Accounts GDP tables", "source_url": "https://amar.org.ir/economic-accounts", "access_method": "standardized CSV received from user's other project", "date_accessed": COLLECTED_DATE, "license": "not documented; requires review", "access_status": "provenance pending independent verification", "contact": "", "notes": "User-reported Table 3 constant-price and Table 1 current-price GDP at basic prices."},
         {"source_id": "tsetmc_ikhza", "source_organization": "TSETMC", "source_name": "اخزا instrument metadata and daily histories", "source_url": "https://www.tsetmc.com/", "access_method": "upstream API-derived standardized CSV", "date_accessed": "2026-07-18", "license": "not documented; requires review", "access_status": "final aggregate received; upstream raw responses absent", "contact": "", "notes": "Endpoint templates and aggregation method are documented in docs/methodology_notes.md."},
@@ -365,7 +345,7 @@ def main() -> None:
 
     issue_rows = [
         {"issue_id": "issue_imported_macro_sci_provenance", "dataset_id": "macro_iran_cpi_inflation_monthly_1399_1404; macro_iran_gdp_quarterly_nominal_real_1399_1404", "date_identified": COLLECTED_DATE, "issue_type": "provenance_requires_review", "description": "SCI table identities and individual values are documented from the prior project but were not independently verified against the live official pages.", "severity": "medium", "status": "open", "resolution": "Verify the retained CPI and GDP values against the cited SCI publications when the pages are accessible.", "related_file": "data/raw/macro/external_data_analysis_20260722/", "notes": "Do not alter received values during verification; record any revised official release separately."},
-        {"issue_id": "issue_imported_macro_upstream_raw_absent", "dataset_id": "macro_iran_usd_free_market_daily_1399_1405; macro_iran_ikhza_risk_free_monthly_1399_1404; macro_us_federal_funds_effective_monthly_jalali_1399_1404", "date_identified": COLLECTED_DATE, "issue_type": "upstream_raw_not_available", "description": "The received standardized CSVs are preserved, but their original download/API-response or instrument-level inputs were not retained in the other project.", "severity": "medium", "status": "open", "resolution": "For a future refresh, reacquire and preserve upstream raw responses with retrieval timestamps and checksums.", "related_file": "data/raw/macro/external_data_analysis_20260722/", "notes": "Current received files remain usable; limitation concerns full upstream reconstruction."},
+        {"issue_id": "issue_imported_macro_upstream_raw_absent", "dataset_id": "macro_iran_ikhza_risk_free_monthly_1399_1404; macro_us_federal_funds_effective_monthly_jalali_1399_1404", "date_identified": COLLECTED_DATE, "issue_type": "upstream_raw_not_available", "description": "The received standardized CSVs are preserved, but their original API-response or instrument-level inputs were not retained in the other project.", "severity": "medium", "status": "open", "resolution": "For a future refresh, reacquire and preserve upstream raw responses with retrieval timestamps and checksums.", "related_file": "data/raw/macro/external_data_analysis_20260722/", "notes": "Current received files remain usable; limitation concerns full upstream reconstruction. The USD source file was subsequently supplied and is managed by process_usd_free_market_history.py."},
     ]
     issue_path = ROOT / "metadata" / "data_issues.csv"
     existing_issues = []

@@ -1,4 +1,4 @@
-"""Register and standardize the CBI TSD Excel exports collected on 1405/04/31.
+"""Register and standardize manually collected CBI TSD Excel exports.
 
 Raw workbooks are copied byte-for-byte. Cleaned outputs retain source units and
 values, restrict observations to Solar Hijri year 1370 onward, and expose CBI's
@@ -26,6 +26,7 @@ REPORT_DATE = "1405/04/31"
 MACRO_CLEAN_DIRECTORIES = {
     "liquidity": "money_and_credit",
     "employment": "labor_market",
+    "national_accounts": "national_accounts",
 }
 
 
@@ -53,6 +54,8 @@ class SingleSpec:
     refs: tuple[tuple[str, ColumnRef], ...]
     category: str
     subcategory: str
+    collected_date: str = COLLECTED_DATE
+    related_task: str = "cbi_tsd_bulk_standardization_20260722"
 
 
 PAIR_SPECS = (
@@ -81,6 +84,12 @@ SINGLE_SPECS = (
     SingleSpec("cbi_hsg_bank_maskan_loans_a", "Bank Maskan loans paid", "mixed; see column units", (("count_thousand_loans", ColumnRef("TSD-Rep-14050431 (17).xlsx", 2)), ("amount_billion_rial", ColumnRef("TSD-Rep-14050431 (17).xlsx", 3))), "housing", "mortgage_credit"),
     SingleSpec("cbi_macro_liquidity_q", "Liquidity", "thousand billion rial", (("value", ColumnRef("TSD-Rep-14050431.xlsx", 2)),), "macro", "liquidity"),
     SingleSpec("cbi_macro_urban_unemployment_rate_q", "Urban unemployment rate", "percent", (("value", ColumnRef("TSD-Rep-14050431 (15).xlsx", 9)),), "macro", "employment"),
+    SingleSpec("cbi_macro_building_gfcf_private_current_a", "Private-sector gross fixed capital formation in buildings at current prices", "billion rial", (("value", ColumnRef("TSD-Rep-14050501.xlsx", 2)),), "macro", "national_accounts", "2026-07-23", "cbi_tsd_national_accounts_20260723"),
+    SingleSpec("cbi_macro_building_gfcf_public_current_a", "Public-sector gross fixed capital formation in buildings at current prices", "billion rial", (("value", ColumnRef("TSD-Rep-14050501.xlsx", 3)),), "macro", "national_accounts", "2026-07-23", "cbi_tsd_national_accounts_20260723"),
+    SingleSpec("cbi_macro_real_estate_value_added_current_a", "Real-estate activities value added at current prices", "billion rial", (("value", ColumnRef("TSD-Rep-14050501.xlsx", 4)),), "macro", "national_accounts", "2026-07-23", "cbi_tsd_national_accounts_20260723"),
+    SingleSpec("cbi_macro_building_gfcf_private_constant_1400_a", "Private-sector gross fixed capital formation in buildings at constant 1400 prices", "billion rial", (("value", ColumnRef("TSD-Rep-14050501.xlsx", 7)),), "macro", "national_accounts", "2026-07-23", "cbi_tsd_national_accounts_20260723"),
+    SingleSpec("cbi_macro_building_gfcf_public_constant_1400_a", "Public-sector gross fixed capital formation in buildings at constant 1400 prices", "billion rial", (("value", ColumnRef("TSD-Rep-14050501.xlsx", 8)),), "macro", "national_accounts", "2026-07-23", "cbi_tsd_national_accounts_20260723"),
+    SingleSpec("cbi_macro_real_estate_value_added_constant_1400_a", "Real-estate activities value added at constant 1400 prices", "billion rial", (("value", ColumnRef("TSD-Rep-14050501.xlsx", 12)),), "macro", "national_accounts", "2026-07-23", "cbi_tsd_national_accounts_20260723"),
 )
 
 
@@ -162,9 +171,13 @@ def relative(path: Path) -> str:
 
 def copy_raw_files() -> dict[str, Path]:
     result: dict[str, Path] = {}
-    for source in sorted(INCOMING.glob("*.xlsx")):
-        category = "macro" if source.name == "TSD-Rep-14050431.xlsx" else "housing"
-        destination = ROOT / "data" / "raw" / category / "cbi_tsd_14050431" / source.name
+    for source in sorted(INCOMING.glob("TSD-Rep-*.xlsx")):
+        if source.name == "TSD-Rep-14050501.xlsx":
+            category, batch = "macro", "cbi_tsd_14050501"
+        else:
+            category = "macro" if source.name == "TSD-Rep-14050431.xlsx" else "housing"
+            batch = "cbi_tsd_14050431"
+        destination = ROOT / "data" / "raw" / category / batch / source.name
         destination.parent.mkdir(parents=True, exist_ok=True)
         if destination.exists() and checksum(destination) != checksum(source):
             raise FileExistsError(f"Raw destination differs and will not be overwritten: {destination}")
@@ -174,7 +187,7 @@ def copy_raw_files() -> dict[str, Path]:
     return result
 
 
-def catalog_row(dataset_id: str, name: str, category: str, subcategory: str, unit: str, output: Path, refs: list[ColumnRef], observations: list[dict[str, object]], raw_paths: dict[str, Path], notes: str) -> dict[str, str]:
+def catalog_row(dataset_id: str, name: str, category: str, subcategory: str, unit: str, output: Path, refs: list[ColumnRef], observations: list[dict[str, object]], raw_paths: dict[str, Path], notes: str, collected_date: str = COLLECTED_DATE, related_task: str = "cbi_tsd_bulk_standardization_20260722") -> dict[str, str]:
     periods = [str(row["period"]) for row in observations]
     source_files = sorted({ref.filename for ref in refs})
     return {
@@ -188,7 +201,7 @@ def catalog_row(dataset_id: str, name: str, category: str, subcategory: str, uni
         "source_organization": "Central Bank of the Islamic Republic of Iran",
         "source_url": SOURCE_URL,
         "collection_method": "manual Excel export",
-        "date_collected": COLLECTED_DATE,
+        "date_collected": collected_date,
         "original_filename": "; ".join(source_files),
         "stored_filename": "; ".join(path.name for path in (raw_paths[name] for name in source_files)),
         "raw_path": "; ".join(relative(raw_paths[name]) for name in source_files),
@@ -206,7 +219,7 @@ def catalog_row(dataset_id: str, name: str, category: str, subcategory: str, uni
         "cleaning_status": "completed",
         "validation_status": "automated structural checks completed; substantive review recommended",
         "current_use": "available",
-        "related_task": "cbi_tsd_bulk_standardization_20260722",
+        "related_task": related_task,
         "confidentiality": "public",
         "checksum_sha256": checksum(output),
         "notes": notes,
@@ -281,10 +294,10 @@ def main() -> None:
         source_name = " | ".join(source_names)
         source_unit = " | ".join(source_units)
         note = "نام‌ها، برچسب‌ها و واحدها مستقیماً از فایل اکسل حفظ شده‌اند. This source series is not an urban–Tehran geographic pair and no counterpart was invented. Source labels: " + "; ".join(meta["source_label_fa"] for _, _, meta, _ in extracted)
-        catalog.append(catalog_row(spec.dataset_id, source_name, spec.category, spec.subcategory, source_unit, output, refs, rows, raw_paths, note))
+        catalog.append(catalog_row(spec.dataset_id, source_name, spec.category, spec.subcategory, source_unit, output, refs, rows, raw_paths, note, spec.collected_date, spec.related_task))
         for label, _, meta, _ in extracted:
             variable_rows.append({"dataset_id": spec.dataset_id, "variable_name": label, "variable_label": meta["source_label_fa"], "description": meta["source_description_fa"], "data_type": "numeric", "unit": meta["source_unit_fa"], "language": "Persian", "allowed_values": "", "missing_value_codes": "blank", "source_definition": meta["source_description_fa"], "notes": "Name, label, unit, and values are preserved directly from the CBI Excel export."})
-        cleaning_log.append({"cleaning_id": f"clean_{spec.dataset_id}", "dataset_id": spec.dataset_id, "date": COLLECTED_DATE, "input_path": "; ".join(relative(raw_paths[r.filename]) for r in refs), "output_path": relative(output), "script": "src/common/process_cbi_tsd_exports.py", "transformation": "Extracted source series; normalized Solar Hijri period; retained years >=1370; preserved values, missingness, source units, and preliminary flags.", "reason": "User-requested standardization", "rows_before": len(periods), "rows_after": len(rows), "columns_before": len(refs), "columns_after": len(fields), "performed_by": "Codex", "review_status": "completed", "notes": "No geographic counterpart existed in the supplied files; none was fabricated."})
+        cleaning_log.append({"cleaning_id": f"clean_{spec.dataset_id}", "dataset_id": spec.dataset_id, "date": spec.collected_date, "input_path": "; ".join(relative(raw_paths[r.filename]) for r in refs), "output_path": relative(output), "script": "src/common/process_cbi_tsd_exports.py", "transformation": "Extracted source series; normalized Solar Hijri period; retained years >=1370; preserved values, missingness, source units, and preliminary flags.", "reason": "User-requested standardization", "rows_before": len(periods), "rows_after": len(rows), "columns_before": len(refs), "columns_after": len(fields), "performed_by": "Codex", "review_status": "completed", "notes": "No geographic counterpart existed in the supplied files; none was fabricated."})
 
     catalog = [row for row in read_csv_rows(ROOT / "metadata" / "data_catalog.csv") if not row.get("dataset_id", "").startswith("cbi_")] + catalog
     variable_rows = [row for row in read_csv_rows(ROOT / "metadata" / "variable_dictionary.csv") if not row.get("dataset_id", "").startswith("cbi_")] + variable_rows
@@ -297,11 +310,11 @@ def main() -> None:
     cleaning_fields = "cleaning_id,dataset_id,date,input_path,output_path,script,transformation,reason,rows_before,rows_after,columns_before,columns_after,performed_by,review_status,notes".split(",")
     write_csv(ROOT / "metadata" / "cleaning_log.csv", cleaning_fields, cleaning_log)
     source_rows = [row for row in read_csv_rows(ROOT / "metadata" / "source_registry.csv") if row.get("source_id") != "cbi_tsd"]
-    source_rows.append({"source_id": "cbi_tsd", "source_organization": "Central Bank of the Islamic Republic of Iran", "source_name": "Time Series Database (TSD)", "source_url": SOURCE_URL, "access_method": "manual Excel export", "date_accessed": COLLECTED_DATE, "license": "not stated in supplied workbooks; requires review", "access_status": "public website", "contact": "", "notes": f"18 Excel exports generated {REPORT_DATE}; website timed out during automated verification on {COLLECTED_DATE}."})
+    source_rows.append({"source_id": "cbi_tsd", "source_organization": "Central Bank of the Islamic Republic of Iran", "source_name": "Time Series Database (TSD)", "source_url": SOURCE_URL, "access_method": "manual Excel export", "date_accessed": "2026-07-23", "license": "not stated in supplied workbooks; requires review", "access_status": "public website", "contact": "", "notes": f"19 Excel exports: 18 generated {REPORT_DATE} and one annual national-accounts export generated 1405/05/01; website timed out during automated verification on {COLLECTED_DATE}."})
     write_csv(ROOT / "metadata" / "source_registry.csv", "source_id,source_organization,source_name,source_url,access_method,date_accessed,license,access_status,contact,notes".split(","), source_rows)
 
     inventory_rows: list[dict[str, object]] = []
-    for source in sorted(INCOMING.glob("*.xlsx")):
+    for source in sorted(INCOMING.glob("TSD-Rep-*.xlsx")):
         workbook = openpyxl.load_workbook(source, data_only=True)
         for sheet in workbook.worksheets:
             for column in range(2, sheet.max_column + 1):
@@ -335,6 +348,7 @@ def main() -> None:
     issues = [row for row in read_csv_rows(ROOT / "metadata" / "data_issues.csv") if not row.get("issue_id", "").startswith("issue_cbi_")] + [
         {"issue_id": "issue_cbi_empty_construction_services_index", "dataset_id": "", "date_identified": COLLECTED_DATE, "issue_type": "empty_source_series", "description": "Column J in TSD-Rep-14050431 (15).xlsx is labeled construction services price index (1400=100) but contains no observations.", "severity": "medium", "status": "open", "resolution": "Re-export this series from CBI TSD if it is required.", "related_file": "data/raw/housing/cbi_tsd_14050431/TSD-Rep-14050431 (15).xlsx", "notes": "Not registered as an available cleaned dataset because there are zero values."},
         {"issue_id": "issue_cbi_empty_bank_maskan_quarterly_count", "dataset_id": "", "date_identified": COLLECTED_DATE, "issue_type": "empty_source_series", "description": "Column C in TSD-Rep-14050431 (16).xlsx is labeled as a Bank Maskan loan-count series but has no unit and no observations.", "severity": "medium", "status": "open", "resolution": "Re-export the quarterly series from CBI TSD if it is required; the separate annual export remains available.", "related_file": "data/raw/housing/cbi_tsd_14050431/TSD-Rep-14050431 (16).xlsx", "notes": "Not registered as an available cleaned dataset because there are zero values."},
+        {"issue_id": "issue_cbi_empty_national_accounts_columns", "dataset_id": "", "date_identified": "2026-07-23", "issue_type": "empty_source_series", "description": "Six labeled columns (E, F, I, J, K, and M) in TSD-Rep-14050501.xlsx contain no observations.", "severity": "low", "status": "open", "resolution": "Re-export the specific CBI TSD series if they are required and the portal supplies observations.", "related_file": "data/raw/macro/cbi_tsd_14050501/TSD-Rep-14050501.xlsx", "notes": "All columns remain documented in excel_series_inventory.csv; only six populated columns were registered as cleaned datasets."},
     ]
     write_csv(ROOT / "metadata" / "data_issues.csv", "issue_id,dataset_id,date_identified,issue_type,description,severity,status,resolution,related_file,notes".split(","), issues)
 
@@ -357,11 +371,11 @@ def main() -> None:
         manifest_rows,
     )
 
-    assert sum(row["dataset_id"].startswith("cbi_") for row in catalog) == 22
-    assert len(list((ROOT / "data" / "raw").glob("**/*.xlsx"))) >= 18
-    assert all(row["time_coverage_start"] >= "1370" for row in catalog)
+    assert sum(row["dataset_id"].startswith("cbi_") for row in catalog) == 28
+    assert len(list((ROOT / "data" / "raw").glob("**/*.xlsx"))) >= 19
+    assert all(row["time_coverage_start"] >= "1370" for row in catalog if row["dataset_id"].startswith("cbi_"))
     assert len(manifest_rows) >= 40
-    print("Registered and cleaned 22 CBI datasets from 18 raw workbooks; preserved other registered datasets.")
+    print("Registered and cleaned 28 CBI datasets from 19 raw workbooks; preserved other registered datasets.")
 
 
 if __name__ == "__main__":
