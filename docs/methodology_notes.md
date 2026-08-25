@@ -44,7 +44,7 @@ These rules document the received datasets; they do not authorize merging, frequ
 
 ## Extended USD/IRR history (2026-07-23)
 
-The later-supplied `USD2Rials-1.csv` is preserved byte-for-byte and contains 13,043 source rows from 1360/07/07 through 1405/04/21. Source labels transition from `bourseview` (8,817 rows through 1390/09/03) to `tgju` (4,226 rows from 1390/09/05). The file contains one exact duplicate for 1404/10/09; the raw file retains both rows and the cleaned unique-date series retains one.
+The later-supplied `dlearn_usd_irr_free_market_daily_1360_1405.csv` is preserved byte-for-byte and contains 13,043 source rows from 1360/07/07 through 1405/04/21. Source labels transition from `bourseview` (8,817 rows through 1390/09/03) to `tgju` (4,226 rows from 1390/09/05). The file contains one exact duplicate for 1404/10/09; the raw file retains both rows and the cleaned unique-date series retains one.
 
 Cleaning normalizes Gregorian dates to `YYYY-MM-DD`, splits the Jalali key into year/month/day fields, removes numeric thousands separators, and parses the rate as Iranian rials per US dollar. All 1,815 observations overlapping the previously retained 1399–1405 standardized raw file agree exactly. No interpolation, calendar filling, averaging, unit conversion, or conflict resolution was required. The historical cleaned filename ending in `1399_1405` is retained for downstream compatibility even though catalogued coverage now starts in 1360.
 

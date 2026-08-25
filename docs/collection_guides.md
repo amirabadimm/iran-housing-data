@@ -38,7 +38,7 @@ The received files are already standardized outputs from another user project. I
 | Dataset | Provider/provenance | Important limitation |
 |---|---|---|
 | Iran CPI and inflation | Statistical Center of Iran; <https://amar.org.ir/statistical-information/statid/28579> | Official table identity and individual values remain pending independent verification. |
-| Free-market USD/IRR | D-Learn archive, underlying rows labeled TGJU; <https://d-learn.ir/p/usd-price/> | The original `USD2Rials-1.csv` is absent; the received file had already been subset, deduplicated, and structurally standardized upstream. |
+| Free-market USD/IRR | D-Learn archive, underlying rows labeled TGJU; <https://d-learn.ir/p/usd-price/> | The original `dlearn_usd_irr_free_market_daily_1360_1405.csv` is absent; the received file had already been subset, deduplicated, and structurally standardized upstream. |
 | Real and nominal GDP | Statistical Center of Iran Economic Accounts; <https://amar.org.ir/economic-accounts> | User-reported Table 3 constant-price and Table 1 current-price series require independent verification. |
 | اخزا risk-free proxy | TSETMC; <https://www.tsetmc.com/> | Final monthly aggregate is retained, but original API responses and instrument-day inputs are absent. |
 | Federal Funds Effective Rate | FRED `FEDFUNDS`; <https://fred.stlouisfed.org/series/FEDFUNDS> | Approximate Jalali-month values use overlap-weighted Gregorian monthly averages; original FRED download is absent. |

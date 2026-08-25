@@ -26,9 +26,9 @@ def file_hash(path: Path) -> str:
 def hydrate_cbi_incoming() -> None:
     """Recreate ignored CBI intake copies from immutable canonical raw files."""
     destination = ROOT / "data" / "incoming" / "manually_collected"
-    sources = sorted((ROOT / "data" / "raw" / "housing" / "cbi_tsd_14050431").glob("TSD-Rep-*.xlsx"))
-    sources += sorted((ROOT / "data" / "raw" / "macro" / "cbi_tsd_14050431").glob("TSD-Rep-*.xlsx"))
-    sources += sorted((ROOT / "data" / "raw" / "macro" / "cbi_tsd_14050501").glob("TSD-Rep-*.xlsx"))
+    sources = sorted((ROOT / "data" / "raw" / "housing" / "cbi_tsd_14050431").glob("*.xlsx"))
+    sources += sorted((ROOT / "data" / "raw" / "macro" / "cbi_tsd_14050431").glob("*.xlsx"))
+    sources += sorted((ROOT / "data" / "raw" / "macro" / "cbi_tsd_14050501").glob("*.xlsx"))
     if len(sources) != 19:
         raise ValueError(f"Expected 19 canonical CBI workbooks, found {len(sources)}")
     destination.mkdir(parents=True, exist_ok=True)

@@ -64,7 +64,7 @@ Five standardized macro CSVs were received from another user project on 2026-07-
 - annualized اخزا risk-free-rate proxy, monthly, 1399-01 through 1404-12;
 - US Federal Funds Effective Rate aligned approximately to Jalali months, 1399-01 through 1404-12.
 
-The five originally received standardized files are preserved exactly under `data/raw/macro/external_data_analysis_20260722/`. Four remain byte-identical to their cleaned copies. The later-supplied `USD2Rials-1.csv` is preserved under `data/raw/macro/dlearn_tgju_20260723/` and is now the canonical source for the extended cleaned FX series. See the catalog and `docs/methodology_notes.md` for provenance and transformation details.
+The five originally received standardized files are preserved exactly under `data/raw/macro/external_data_analysis_20260722/`. Four remain byte-identical to their cleaned copies. The later-supplied `dlearn_usd_irr_free_market_daily_1360_1405.csv` is preserved under `data/raw/macro/dlearn_tgju_20260723/` and is now the canonical source for the extended cleaned FX series. See the catalog and `docs/methodology_notes.md` for provenance and transformation details.
 
 Revalidate and recreate missing cleaned copies with:
 

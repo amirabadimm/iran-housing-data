@@ -1,7 +1,7 @@
 # Process CBI annual national-accounts export
 
 - Source: https://tsdview.cis.cbi.ir/single-data
-- Intake: `data/incoming/manually_collected/TSD-Rep-14050501.xlsx`
+- Intake: `data/incoming/manually_collected/cbi_building_investment_real_estate_value_added_national_accounts_annual_1395_1402.xlsx`
 - Report generation date: 1405/05/01
 - Preservation: byte-identical canonical raw copy under `data/raw/macro/cbi_tsd_14050501/`
 - Inventory: all 12 labeled data columns, comprising 6 populated and 6 empty series

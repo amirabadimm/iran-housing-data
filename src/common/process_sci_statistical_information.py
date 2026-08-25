@@ -29,20 +29,20 @@ TASK = "process_sci_statistical_information_20260723"
 SOURCE_URL = "https://amar.org.ir/statistical-information"
 
 FILES = [
-    "masahat_zamin_parvane_maskooni_shahri_1369-1401-14040203130948.xls",
-    "masahat_zamin_parvane_sakhteman_shahri_1369-1401-14040203130506.xls",
-    "masahat_zirbana_parvane_maskooni_shahri_1369-1401-14040203120737.xls",
-    "NE_GHeymat_Ejare_Maskan_Teh_88-99.xlsx",
-    "tedad_parvane_maskooni_shahri_1369-1401-14040202165720.xls",
-    "tedad_parvane_noe_karbari_1369-1401-14040202164828.xls",
-    "tedad_parvane_sakhteman_shahri_ostani_1359-1401-14040202153428.xlsx",
-    "tedad_parvane_sakhteman_tehran_1369-1401-14040202154433.xls",
-    "tedad_vahed_maskooni_pishbini_tehran_1369-1401-14040202155036.xls",
-    "ts_building_140404-14050319105758.xlsx",
-    "ts_urban_140503-14050421160048.xlsx",
+    "sci_residential_building_permits_land_area_urban_1369_1401.xls",
+    "sci_building_permits_land_area_urban_1369_1401.xls",
+    "sci_residential_building_permits_floor_area_urban_1369_1401.xls",
+    "sci_tehran_housing_prices_rents_transactions_quarterly_1388_1399.xlsx",
+    "sci_residential_building_permits_count_urban_1369_1401.xls",
+    "sci_building_permits_count_by_use_urban_1369_1401.xls",
+    "sci_building_permits_count_by_province_urban_1359_1401.xlsx",
+    "sci_building_permits_count_tehran_1369_1401.xls",
+    "sci_building_permits_predicted_residential_units_tehran_1369_1401.xls",
+    "sci_tehran_residential_building_input_indices_material_prices_1390_1404.xlsx",
+    "sci_urban_household_cpi_inflation_national_provincial_1381_1405.xlsx",
 ]
 
-MACRO_FILES = {"ts_urban_140503-14050421160048.xlsx"}
+MACRO_FILES = {"sci_urban_household_cpi_inflation_national_provincial_1381_1405.xlsx"}
 MISSING = {"-", "_", "×", "x", "X", "…", "..."}
 QUARTER = {"بهار": 1, "تابستان": 2, "پاییز": 3, "پاييز": 3, "زمستان": 4}
 MONTH = {name: i for i, name in enumerate(("فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"), 1)}
@@ -464,7 +464,7 @@ def update_metadata(outputs: list[Output], raw: dict[str, Path]) -> None:
     issues=[
         {"issue_id":"issue_sci_portal_502_20260723","dataset_id":"sci_","date_identified":DATE,"issue_type":"source_access","description":"Official statistical-information URL returned HTTP 502 during automated verification.","severity":"low","status":"documented","resolution":"Used user-supplied official workbooks and their internal Persian metadata/source notes; retained URL for later review.","related_file":"metadata/sci_excel_inventory.csv","notes":"Does not affect local extraction."},
         {"issue_id":"issue_sci_source_missing_markers","dataset_id":"sci_","date_identified":DATE,"issue_type":"missing_values","description":"Several sheets use '-' or '×' for unavailable observations.","severity":"low","status":"resolved","resolution":"Stored numeric value as blank and retained the exact marker in an adjacent marker field.","related_file":"data/cleaned/","notes":"No zero or estimate was substituted."},
-        {"issue_id":"issue_sci_cpi_table9_year_header","dataset_id":"sci_urban_cpi_provincial","date_identified":DATE,"issue_type":"source_header_typo","description":"Urban CPI Table 9 repeats year 1402 for the block positioned between 1402 and 1404.","severity":"medium","status":"resolved","resolution":"Standardized that block as 1403, corroborated by the chronological sequence and parallel Tables 7, 8 and 10; raw workbook remains unchanged.","related_file":"data/raw/macro/sci_statistical_information_20260723/ts_urban_140503-14050421160048.xlsx","notes":"The processor asserts the exact source pattern before applying the correction."},
+        {"issue_id":"issue_sci_cpi_table9_year_header","dataset_id":"sci_urban_cpi_provincial","date_identified":DATE,"issue_type":"source_header_typo","description":"Urban CPI Table 9 repeats year 1402 for the block positioned between 1402 and 1404.","severity":"medium","status":"resolved","resolution":"Standardized that block as 1403, corroborated by the chronological sequence and parallel Tables 7, 8 and 10; raw workbook remains unchanged.","related_file":"data/raw/macro/sci_statistical_information_20260723/sci_urban_household_cpi_inflation_national_provincial_1381_1405.xlsx","notes":"The processor asserts the exact source pattern before applying the correction."},
     ]
     replace(ROOT/"metadata/data_issues.csv",ISSUE_FIELDS,"issue_id","issue_sci_",issues)
     manifest=[]

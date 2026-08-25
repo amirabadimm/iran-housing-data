@@ -11,8 +11,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-INCOMING = ROOT / "data" / "incoming" / "manually_collected" / "USD2Rials-1.csv"
-RAW = ROOT / "data" / "raw" / "macro" / "dlearn_tgju_20260723" / "USD2Rials-1.csv"
+INCOMING = ROOT / "data" / "incoming" / "manually_collected" / "dlearn_usd_irr_free_market_daily_1360_1405.csv"
+RAW = ROOT / "data" / "raw" / "macro" / "dlearn_tgju_20260723" / "dlearn_usd_irr_free_market_daily_1360_1405.csv"
 PRIOR_RAW = ROOT / "data" / "raw" / "macro" / "external_data_analysis_20260722" / "iran_daily_usd_free_market_rate_1399_1405.csv"
 CLEAN = ROOT / "data" / "cleaned" / "macro" / "exchange_rates" / "iran_daily_usd_free_market_rate_1399_1405.csv"
 DATASET_ID = "macro_iran_usd_free_market_daily_1399_1405"
@@ -129,7 +129,7 @@ def validate_prior_overlap(rows: list[dict[str, object]]) -> None:
 
 def update_metadata(rows: list[dict[str, object]]) -> None:
     notes = (
-        "Standardized from the retained USD2Rials-1.csv source. Coverage extends backward from the prior "
+        "Standardized from the retained dlearn_usd_irr_free_market_daily_1360_1405.csv source. Coverage extends backward from the prior "
         "1399 subset to 1360/07/07; all 1,815 overlapping observations match exactly. One exact duplicate "
         "source row for 1404/10/09 was removed. The historical cleaned filename is retained for compatibility."
     )
@@ -145,8 +145,8 @@ def update_metadata(rows: list[dict[str, object]]) -> None:
         "source_url": SOURCE_URL,
         "collection_method": "user-supplied source CSV standardized locally",
         "date_collected": "2026-07-23",
-        "original_filename": "USD2Rials-1.csv",
-        "stored_filename": "USD2Rials-1.csv",
+        "original_filename": "dlearn_usd_irr_free_market_daily_1360_1405.csv",
+        "stored_filename": "dlearn_usd_irr_free_market_daily_1360_1405.csv",
         "raw_path": relative(RAW),
         "cleaned_path": relative(CLEAN),
         "derived_path": "",
@@ -220,7 +220,7 @@ def update_metadata(rows: list[dict[str, object]]) -> None:
         "license": "not documented; requires review",
         "access_status": "source file retained",
         "contact": "",
-        "notes": "USD2Rials-1.csv is preserved byte-for-byte; 8,817 rows are labeled bourseview and 4,226 rows tgju, including one exact duplicate TGJU row.",
+        "notes": "dlearn_usd_irr_free_market_daily_1360_1405.csv is preserved byte-for-byte; 8,817 rows are labeled bourseview and 4,226 rows tgju, including one exact duplicate TGJU row.",
     }
     write_rows(source_path, SOURCE_FIELDS, [row for row in sources if row.get("source_id") != "dlearn_tgju_fx"] + [source])
 
@@ -231,7 +231,7 @@ def update_metadata(rows: list[dict[str, object]]) -> None:
         "dataset_id": DATASET_ID,
         "date_identified": "2026-07-23",
         "issue_type": "exact_duplicate_source_row",
-        "description": "USD2Rials-1.csv contains two identical records for 1404/10/09 (2025-12-30), source tgju, value 1,383,400 IRR/USD.",
+        "description": "dlearn_usd_irr_free_market_daily_1360_1405.csv contains two identical records for 1404/10/09 (2025-12-30), source tgju, value 1,383,400 IRR/USD.",
         "severity": "low",
         "status": "resolved",
         "resolution": "Retained one record in the cleaned unique-date series; preserved both records in immutable raw.",
@@ -264,7 +264,7 @@ def main() -> None:
     write_rows(CLEAN, OUTPUT_FIELDS, rows)
     update_metadata(rows)
     update_manifest()
-    print(f"Preserved USD2Rials-1.csv and standardized {len(rows)} unique daily USD/IRR observations.")
+    print(f"Preserved dlearn_usd_irr_free_market_daily_1360_1405.csv and standardized {len(rows)} unique daily USD/IRR observations.")
 
 
 if __name__ == "__main__":

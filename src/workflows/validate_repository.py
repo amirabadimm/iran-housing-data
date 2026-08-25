@@ -76,7 +76,7 @@ def validate() -> dict[str, object]:
         errors.append("CBI catalog must contain 28 datasets including the six annual national-accounts series")
     cbi_inventory = rows(ROOT / "metadata" / "excel_series_inventory.csv")
     national_accounts_inventory = [
-        item for item in cbi_inventory if item["source_file"] == "TSD-Rep-14050501.xlsx"
+        item for item in cbi_inventory if item["source_file"] == "cbi_building_investment_real_estate_value_added_national_accounts_annual_1395_1402.xlsx"
     ]
     if len({item["source_file"] for item in cbi_inventory}) != 19:
         errors.append("CBI inventory must cover 19 workbooks")

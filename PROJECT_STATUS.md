@@ -16,11 +16,11 @@ Available under `data/cleaned/housing/`, `data/cleaned/macro/`, `data/cleaned/st
 
 ## Known data issues
 
-Two labeled source columns contain no observations: the construction-services price index in `TSD-Rep-14050431 (15).xlsx` and a quarterly Bank Maskan loan-count placeholder in `TSD-Rep-14050431 (16).xlsx`. They were not registered as available datasets. See `metadata/data_issues.csv`.
+Two labeled source columns contain no observations: the construction-services price index in `cbi_rent_land_price_unemployment_indices_quarterly.xlsx` and a quarterly Bank Maskan loan-count placeholder in `cbi_building_permits_floor_area_quarterly.xlsx`. They were not registered as available datasets. See `metadata/data_issues.csv`.
 
-Six labeled columns in `TSD-Rep-14050501.xlsx` also contain no observations. All are retained in the Excel inventory, while only the six populated series were standardized.
+Six labeled columns in `cbi_building_investment_real_estate_value_added_national_accounts_annual_1395_1402.xlsx` also contain no observations. All are retained in the Excel inventory, while only the six populated series were standardized.
 
-Imported macro limitations are also recorded there: pending SCI provenance verification and missing upstream raw inputs for the اخزا and Federal Funds series. The previously missing `USD2Rials-1.csv` source is now retained and extends the cleaned FX history to 1360/07/07.
+Imported macro limitations are also recorded there: pending SCI provenance verification and missing upstream raw inputs for the اخزا and Federal Funds series. The previously missing `dlearn_usd_irr_free_market_daily_1360_1405.csv` source is now retained and extends the cleaned FX history to 1360/07/07.
 
 The algotik/TSETMC real-estate-fund listing endpoint returned an empty array, so the validated official instrument-search endpoint was used. One empty legacy `تسه` search candidate was excluded without retaining its empty history. See `metadata/data_issues.csv`.
 

@@ -1,6 +1,6 @@
 # Extend the daily USD/IRR free-market history
 
-- Source intake: `data/incoming/manually_collected/USD2Rials-1.csv`
+- Source intake: `data/incoming/manually_collected/dlearn_usd_irr_free_market_daily_1360_1405.csv`
 - Preservation: byte-identical canonical raw copy under `data/raw/macro/dlearn_tgju_20260723/`
 - Source rows: 13,043
 - Cleaned output: 13,042 unique daily available-market observations
