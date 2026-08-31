@@ -33,8 +33,8 @@
 جزئیات در [معماری](docs/ARCHITECTURE.md)، [قرارداد مجموعه‌داده](docs/DATASET_CONTRACT.md) و [پروتکل به‌روزرسانی](docs/UPDATE_PROTOCOL.md) آمده است.
 ## Development environment
 
-Python 3.11 or newer is required. This repository shares `E:\\Finenv` with the sibling
-`E:\\Work` empirical-research repository. From `E:\\Housing` in PowerShell:
+Python 3.11 or newer is required. This repository shares `..\Finenv` with the sibling
+`..\Work` empirical-research repository. From the repository root in PowerShell:
 
 ```powershell
 py -m venv ..\Finenv
