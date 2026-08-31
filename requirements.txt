@@ -1,5 +1,10 @@
+# Direct dependencies for the Iran housing data repository.
+# Install into the shared E:\Finenv environment.
 algotik-tse==1.0.3
 jdatetime>=5,<7
+numpy>=1.26,<3
 openpyxl>=3.1,<4
+pandas>=2.2,<4
+pypdf>=6,<7
 requests>=2.32,<3
 xlrd>=2.0,<3
