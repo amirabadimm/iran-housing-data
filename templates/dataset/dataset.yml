@@ -1,0 +1,32 @@
+dataset_id: null
+title_fa: null
+domain: null
+topic: null
+provider:
+  organization_fa: null
+  publishing_unit_fa: null
+source:
+  landing_page_url: null
+  direct_download_url: null
+  access_method: null
+coverage:
+  frequency: null
+  start_period: null
+  end_period: null
+  geography: null
+  unit: null
+  stock_or_flow: null
+  reference_time: null
+file:
+  original_name: null
+  publication_date: null
+  downloaded_at: null
+  checksum_sha256: null
+license: null
+expected_release_lag_days: null
+update_mode: null
+primary_key: []
+overlap_policy: null
+revision_policy: null
+publish_mode: atomic
+status: discovered

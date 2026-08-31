@@ -1,38 +1,24 @@
-# Python
+# Local environments and caches
+.venv/
 __pycache__/
 *.py[cod]
-.venv/
-venv/
 .pytest_cache/
 .ipynb_checkpoints/
 
-# Editors and operating systems
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
+# Working data: never commit unregistered arrivals or transient builds
+data/incoming/**
+!data/incoming/README.md
+data/staging/**
+!data/staging/README.md
 
-# Credentials and local configuration
+# Local Power BI and office lock files
+*.pbix
+~$*
+
+# Secrets and local configuration
 .env
 .env.*
 !.env.example
-*.pem
-*.key
 
-# Temporary intake and generated outputs
-data/incoming/downloaded/*
-data/incoming/manually_collected/*
-data/incoming/professor_provided/*
-data/incoming/pending_review/*
-outputs/tables/*
-outputs/figures/*
-outputs/datasets/*
-outputs/reports/*
-outputs/validation/*.json
-
-# Reproducible dated TSETMC API snapshots (cleaned/derived CSVs are distributed)
-data/raw/stocks/tsetmc_housing_market_*/
-data/raw/related_industries/tsetmc_construction_materials_*/
-
-# Preserve directory placeholders
-!.gitkeep
+# Personal research scratchpad
+Notes.txt
