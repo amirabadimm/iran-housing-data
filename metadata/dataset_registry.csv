@@ -1,1 +1,2 @@
 dataset_id,title_fa,domain,topic,provider_id,frequency,status,latest_period,expected_release_lag_days,update_mode,current_version
+cbi_selected_economic_indicators_monetary_credit_monthly,گزیده آمارهای اقتصادی - بخش پولی و بانکی,macroeconomic_environment,liquidity,cbi_economic_statistics,monthly,registered,1404-12,,upsert_revision,raw_1385-01_1404-12

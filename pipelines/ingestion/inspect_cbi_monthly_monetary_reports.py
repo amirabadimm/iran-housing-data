@@ -1,4 +1,4 @@
-"""Inspect incoming CBI monthly monetary reports without modifying source files."""
+"""Inspect registered raw CBI monthly monetary reports without modifying them."""
 
 from __future__ import annotations
 
@@ -10,9 +10,9 @@ from pathlib import Path
 import xlrd
 from pypdf import PdfReader
 
-
 ROOT = Path(__file__).resolve().parents[2]
-INCOMING = ROOT / "data" / "incoming"
+DATASET_ID = "cbi_selected_economic_indicators_monetary_credit_monthly"
+SOURCE_ROOT = ROOT / "data" / "raw" / DATASET_ID
 OUTPUT = ROOT / "data" / "staging" / "cbi_monthly_report_inspection.json"
 
 TERMS = {
@@ -48,7 +48,8 @@ def inspect_pdf(path: Path) -> dict[str, object]:
         for page in reader.pages:
             try:
                 pages.append(page.extract_text() or "")
-            except Exception:
+            # A damaged page must not prevent the remaining registered files from inspection.
+            except Exception:  # noqa: BLE001
                 pages.append("")
         text = "\n".join(pages)
         return {
@@ -57,7 +58,8 @@ def inspect_pdf(path: Path) -> dict[str, object]:
             "term_hits": hits(text),
             "error": None,
         }
-    except Exception as exc:
+    # Record file-level parser failures in the inspection manifest for manual review.
+    except Exception as exc:  # noqa: BLE001
         return {"pages": None, "text_chars": 0, "term_hits": hits(""), "error": repr(exc)}
 
 
@@ -80,17 +82,24 @@ def inspect_xls(path: Path) -> dict[str, object]:
             "term_hits": hits(all_text),
             "error": None,
         }
-    except Exception as exc:
+    # Record file-level parser failures in the inspection manifest for manual review.
+    except Exception as exc:  # noqa: BLE001
         return {"sheets": [], "text_chars": 0, "term_hits": hits(""), "error": repr(exc)}
 
 
 def main() -> None:
     records = []
-    for path in sorted(INCOMING.iterdir(), key=lambda item: item.name.lower()):
-        if not path.is_file() or path.name == "README.md":
+    for path in sorted(SOURCE_ROOT.rglob("*"), key=lambda item: item.as_posix().lower()):
+        if not path.is_file() or path.suffix.lower() not in {".pdf", ".xls"}:
             continue
         result = inspect_pdf(path) if path.suffix.lower() == ".pdf" else inspect_xls(path)
-        records.append({"file": path.name, "extension": path.suffix.lower(), **result})
+        records.append(
+            {
+                "file": path.relative_to(ROOT).as_posix(),
+                "extension": path.suffix.lower(),
+                **result,
+            }
+        )
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"files": len(records), "output": str(OUTPUT)}, ensure_ascii=False))

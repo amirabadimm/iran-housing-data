@@ -1,0 +1,21 @@
+status: standardized
+primary_key: [solar_hijri_period]
+fields:
+  - {name: solar_hijri_period, type: string, nullable: false, example: 1404-12}
+  - {name: solar_hijri_year, type: integer, nullable: false}
+  - {name: solar_hijri_month, type: integer, nullable: false}
+  - {name: liquidity_thousand_billion_rials, type: number, nullable: false}
+  - {name: money_thousand_billion_rials, type: number, nullable: false}
+  - {name: quasi_money_thousand_billion_rials, type: number, nullable: false}
+  - {name: source_unit, type: string, nullable: false}
+  - {name: source_format, type: string, nullable: false}
+  - {name: source_file, type: string, nullable: false}
+  - {name: source_location, type: string, nullable: false}
+  - {name: extraction_method, type: string, nullable: false}
+  - {name: accounting_identity_difference, type: number, nullable: false}
+  - {name: validation_status, type: string, nullable: false}
+  - {name: source_sha256, type: string, nullable: false}
+constraints:
+  - solar_hijri_month is between 1 and 12
+  - solar_hijri_period is unique and complete from 1385-01 through 1404-12
+  - liquidity equals money plus quasi-money within 0.11 thousand billion rials

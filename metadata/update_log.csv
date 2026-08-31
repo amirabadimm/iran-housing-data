@@ -1,1 +1,2 @@
 run_id,dataset_id,started_at,finished_at,input_version,output_version,code_version,row_count,validation_status,publish_status,error
+20260831T162600+0330_register_cbi_monetary_monthly,cbi_selected_economic_indicators_monetary_credit_monthly,2026-08-31T16:20:00+03:30,2026-08-31T16:26:00+03:30,incoming_original_names,raw_1385-01_1404-12,working_tree,240,passed,registered_raw,

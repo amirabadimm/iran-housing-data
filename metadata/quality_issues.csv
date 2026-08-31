@@ -1,1 +1,2 @@
 issue_id,dataset_id,file_id,detected_at,severity,issue_type,description,status,resolved_at
+cbi_monetary_pdf_rtl_layout_20260831,cbi_selected_economic_indicators_monetary_credit_monthly,,2026-08-31T16:26:00+03:30,medium,pdf_text_layout,PDF text layers exist but RTL table reading order is degraded in legacy reports; Persian OCR and table-level validation are required before structured extraction.,open,

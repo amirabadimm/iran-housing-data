@@ -1,0 +1,40 @@
+dataset_id: cbi_selected_economic_indicators_monetary_credit_monthly
+title_fa: گزیده آمارهای اقتصادی - بخش پولی و بانکی
+domain: macroeconomic_environment
+topic: liquidity
+provider:
+  organization_fa: بانک مرکزی جمهوری اسلامی ایران
+  publishing_unit_fa: مدیریت کل آمارهای اقتصادی
+source:
+  landing_page_url: https://cbi.ir/category/2692.aspx
+  direct_download_url: null
+  access_method: manual
+coverage:
+  frequency: monthly
+  start_period: 1385-01
+  end_period: 1404-12
+  geography: Iran
+  unit: thousand billion rials
+  stock_or_flow: end-of-month stock
+  reference_time: end of Solar Hijri month
+file:
+  original_name: multiple_monthly_files; see metadata/file_registry.csv
+  publication_date: null
+  downloaded_at: multiple; see metadata/file_registry.csv
+  checksum_sha256: multiple; see metadata/file_registry.csv
+license: null
+expected_release_lag_days: null
+update_mode: upsert_revision
+primary_key:
+  - solar_hijri_year
+  - solar_hijri_month
+overlap_policy: retain every source snapshot and reconcile revisions during standardization
+revision_policy: never replace a registered raw file
+publish_mode: atomic
+status: standardized
+standardized_output: data/standardized/macroeconomic_environment/liquidity/cbi_selected_economic_indicators_monetary_credit_monthly/monthly_liquidity.csv
+generating_pipeline: pipelines/standardization/build_cbi_monthly_liquidity.py
+validation:
+  row_count: 240
+  period_coverage: complete
+  accounting_identity: liquidity equals money plus quasi-money

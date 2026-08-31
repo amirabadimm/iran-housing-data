@@ -8,6 +8,8 @@ __pycache__/
 # Working data: never commit unregistered arrivals or transient builds
 data/incoming/**
 !data/incoming/README.md
+data/raw/**
+!data/raw/README.md
 data/staging/**
 !data/staging/README.md
 
