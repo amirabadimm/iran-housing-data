@@ -1,3 +1,3 @@
-# آزمون‌ها
+# Tests
 
-آزمون‌های schema، کلید یکتا، پوشش، بازنگری و قرارداد انتشار پس از ایجاد پایپ‌لاین واقعی افزوده می‌شوند.
+Add tests for schema, primary keys, coverage, revisions, accounting identities, and publication contracts alongside production pipelines.

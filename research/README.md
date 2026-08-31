@@ -1,3 +1,3 @@
-# پژوهش
+# Research
 
-پرسش‌های پژوهشی، روش‌ها، ادبیات و notebookها با ارجاع صریح به dataset_id و نسخه داده نگهداری می‌شوند.
+Store research questions, methods, literature, and notebooks here with explicit references to dataset IDs and data versions.

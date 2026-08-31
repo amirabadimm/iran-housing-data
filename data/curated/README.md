@@ -1,3 +1,3 @@
-# Curated
+# Curated Data
 
-مجموعه‌داده‌های اعتبارسنجی‌شده و پژوهش‌پذیر. هر خروجی باید lineage روشن داشته باشد.
+Validated, research-ready datasets with explicit lineage, documented transformations, and passed quality checks.

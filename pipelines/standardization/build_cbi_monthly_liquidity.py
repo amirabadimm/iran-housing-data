@@ -166,7 +166,7 @@ def extract_xls(path: Path, year: int, month: int) -> Record:
         month,
         values,
         "thousand_billion_rials",
-        f"sheet:{sheet_name}",
+        "sheet:major_monetary_variables",
         "xls_cell_extraction",
     )
 

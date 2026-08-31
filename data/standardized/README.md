@@ -1,3 +1,3 @@
-# Standardized
+# Standardized Data
 
-داده‌های هم‌شکل‌شده با حفظ جدایی منابع و معنای اصلی متغیرها.
+Technically consistent datasets that preserve provider separation and the original meaning of variables.

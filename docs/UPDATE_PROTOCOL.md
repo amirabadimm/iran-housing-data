@@ -1,27 +1,25 @@
-# پروتکل به‌روزرسانی و پایش
+# Update and Monitoring Protocol
 
-## بازتولیدپذیری و اجرای مجدد
+## Reproducibility
 
-ورودی خام، تنظیمات، نسخه کد و وابستگی‌ها باید برای بازسازی خروجی کافی باشند. اجرای دوباره یک run با ورودی یکسان باید idempotent باشد: خروجی یکسان، بدون رکورد تکراری.
+Raw inputs, configuration, code, and dependencies must rebuild every output. Identical inputs must produce identical output without duplicate records.
 
-## الگوهای به‌روزرسانی
+## Update strategies
 
-- `append_only`: داده روزانه یا رویدادی که گذشته را بازنویسی نمی‌کند.
-- `upsert_revision`: آمارهایی مانند نقدینگی، تورم و تولید که دوره‌های قبلی را بازنگری می‌کنند.
-- `snapshot_rebuild`: منبعی که هر بار کل تاریخ را در یک فایل جدید منتشر می‌کند.
-- `dependency_rebuild`: خروجی مشتق‌شده‌ای که با تغییر ورودی وابسته بازسازی می‌شود.
+- `append_only`: unrevised event or daily data.
+- `upsert_revision`: statistics that revise earlier periods.
+- `snapshot_rebuild`: complete-history releases.
+- `dependency_rebuild`: derived outputs rebuilt after input changes.
 
-انتخاب الگو برای هر داده در `dataset.yml` ثبت می‌شود. برای داده‌های بازنگری‌پذیر، مقدار پیشین حذف نمی‌شود؛ نسخه انتشار و زمان مشاهده نگهداری می‌شود.
+Record the strategy in `dataset.yml`. Retain prior observations for revision-prone data.
 
-## انتشار اتمی
+## Atomic publication
 
-1. run با شناسه یکتا در `data/staging/<run_id>/` ساخته می‌شود.
-2. schema، کلید یکتا، بازه زمانی، مقادیر گمشده، جهش غیرعادی و سازگاری با نسخه قبل آزموده می‌شود.
-3. در صورت شکست، نسخه جاری دست‌نخورده می‌ماند.
-4. در صورت قبولی، خروجی کامل با manifest منتشر و اشاره‌گر نسخه جاری یک‌باره جابه‌جا می‌شود.
+1. Build a unique run under `data/staging/<run_id>/`.
+2. Validate schema, keys, coverage, missingness, outliers, identities, and compatibility.
+3. Leave the current publication untouched on failure.
+4. Publish the validated output and manifest atomically.
 
-## پایش تازگی و کیفیت
+## Monitoring
 
-برای هر مجموعه‌داده این موارد گزارش می‌شوند: آخرین دوره موجود، تاریخ آخرین بررسی و انتشار، تناوب، تأخیر انتشار، وضعیت `current/due/stale/unknown`، تعداد ردیف، checksum، تغییر schema، تعداد بازنگری، وضعیت run و خطاهای کیفیت.
-
-Power BI فقط جداول منتشرشده در `curated` یا `marts/power_bi` را می‌خواند. Refresh داشبورد پس از موفقیت انتشار داده اجرا می‌شود، نه هم‌زمان با دریافت فایل خام.
+Track coverage, timestamps, frequency, publication lag, freshness, row count, checksum, schema changes, revisions, run status, and quality failures. Refresh Power BI only after successful publication.

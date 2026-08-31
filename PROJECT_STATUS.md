@@ -1,21 +1,16 @@
-# وضعیت پروژه
+# Project Status
 
-تاریخ بازطراحی: ۱۴۰۵/۰۶/۰۴ (2026-08-26)
+Last reviewed: 2026-08-31
 
-## وضعیت فعلی
+## Current state
 
-- ساختار قدیمی از working tree پاک شده و تاریخچه Git حفظ شده است.
-- معماری موضوع‌محور و لایه‌های چرخه عمر داده ایجاد شده‌اند.
-- هنوز هیچ مجموعه‌داده‌ای در ساختار جدید ثبت یا نهایی نشده است.
-- هنوز هیچ خروجی Power BI قابل اتکا وجود ندارد.
-- `Notes.txt` عمداً بدون تغییر نگهداری شده است.
+- The repository uses a subject-oriented architecture and explicit lifecycle layers.
+- The CBI monthly monetary and credit dataset is registered and standardized.
+- All 240 source reports are checksum-registered and preserved byte-for-byte.
+- The monthly series covers Solar Hijri 1385-01 through 1404-12 without gaps.
+- Every observation passes: liquidity = money + quasi-money.
+- No curated research dataset or Power BI mart has been published yet.
 
-## گام بعدی
+## Current focus
 
-تمرکز نخست «نقدینگی» است. هر فایل باید جداگانه دریافت، بررسی و با نام فارسی واقعی شاخص، منبع، تناوب، پوشش، واحد و سیاست بازنگری ثبت شود. امکان استخراج ماهانه فقط پس از مشاهده فایل‌ها و منبع رسمی تعیین می‌شود؛ تناوب ماهانه از داده فصلی حدس زده نمی‌شود.
-## CBI monthly monetary and banking reports
-
-- Registered 240 monthly source reports with complete Solar Hijri coverage from 1385-01 through 1404-12.
-- Preserved the 180 PDF and 60 Excel originals byte-for-byte under year-based raw folders.
-- Recorded original filenames, relative canonical paths, byte counts, download times, and SHA-256 checksums in metadata/file_registry.csv.
-- The legacy PDFs contain text layers, but RTL table order is degraded; Persian OCR and table-level validation remain required before structured extraction.
+Extend the macroeconomic environment domain with independently registered datasets while preserving provider separation, relative paths, raw-file immutability, lineage, and validation.

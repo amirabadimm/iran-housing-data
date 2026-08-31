@@ -1,3 +1,3 @@
-# محیط کلان اقتصادی
+# Macroeconomic Environment
 
-نقدینگی، تورم، نرخ ارز، نرخ‌های سود، بیکاری و تولید ناخالص داخلی. نخستین موضوع در دست بررسی: نقدینگی.
+Liquidity, inflation, exchange rates, interest rates, unemployment, and gross domestic product.

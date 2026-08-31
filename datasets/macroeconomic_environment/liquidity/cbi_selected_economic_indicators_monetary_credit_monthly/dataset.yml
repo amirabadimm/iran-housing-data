@@ -1,10 +1,10 @@
 dataset_id: cbi_selected_economic_indicators_monetary_credit_monthly
-title_fa: گزیده آمارهای اقتصادی - بخش پولی و بانکی
+title: CBI Selected Economic Indicators - Monthly Monetary and Credit Data
 domain: macroeconomic_environment
 topic: liquidity
 provider:
-  organization_fa: بانک مرکزی جمهوری اسلامی ایران
-  publishing_unit_fa: مدیریت کل آمارهای اقتصادی
+  organization: Central Bank of the Islamic Republic of Iran
+  publishing_unit: Economic Statistics Department
 source:
   landing_page_url: https://cbi.ir/category/2692.aspx
   direct_download_url: null

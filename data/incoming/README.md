@@ -1,3 +1,3 @@
-# Incoming
+# Incoming Data
 
-فایل‌های تازه و بررسی‌نشده را اینجا قرار دهید. فایل نامشخص در `uncategorized/` می‌ماند تا منبع و موضوع آن تأیید شود. محتوای این پوشه در Git ثبت نمی‌شود.
+Place new, unverified files here without modification. Keep uncertain files under `uncategorized/` until their provider and subject are confirmed. Incoming contents are excluded from Git.

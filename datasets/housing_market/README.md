@@ -1,3 +1,3 @@
-# بازار مسکن
+# Housing Market
 
-معاملات خرید و فروش، اجاره‌بها و زمین.
+Residential sales, rents, land prices, transaction volumes, and market activity.

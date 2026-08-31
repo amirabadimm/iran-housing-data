@@ -1,3 +1,3 @@
-# سرمایه‌گذاری مسکن
+# Housing Investment
 
-سرمایه‌گذاری بخش خصوصی، تشکیل سرمایه ثابت و ارزش افزوده فعالیت‌های املاک.
+Private investment, fixed-capital formation, and value added in real-estate activities.

@@ -1,3 +1,3 @@
-# Staging
+# Staging Data
 
-فضای موقت و Git-ignored برای ساخت و اعتبارسنجی run پیش از انتشار اتمی.
+Temporary, Git-ignored workspace for building and validating a run before atomic publication.

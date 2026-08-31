@@ -1,9 +1,10 @@
-# قرارداد نام‌گذاری
+# Naming Conventions
 
-- عنوان نمایشی و توضیحات به فارسی واقعی منبع نوشته می‌شوند.
-- شناسه فنی مسیرها `lower_snake_case` و پایدار است.
-- نام dataset شامل موضوع، تولیدکننده و تناوب است؛ مانند `total_liquidity_cbi_monthly`.
-- نام فایل خام تحمیلیِ منبع حفظ می‌شود؛ معنی آن در file registry ثبت می‌شود.
-- snapshotها در مسیر `data/raw/<dataset_id>/<YYYY-MM-DD>/` قرار می‌گیرند.
-- فایل خروجی نام نسخه یا تاریخ انتشار دارد و فایل مبهمی مانند `final.xlsx` ساخته نمی‌شود.
-- مخفف سازمان تنها وقتی استفاده می‌شود که نام کامل آن در شناسنامه ثبت شده باشد.
+- Write maintained documentation and metadata in professional English.
+- Preserve native labels only for source fidelity or parser matching.
+- Use stable `lower_snake_case` identifiers.
+- Preserve original source filenames in the file registry.
+- Organize raw files under `data/raw/<domain>/<topic>/<dataset_id>/<year>/`.
+- Use descriptive output names; never names such as `final.xlsx`.
+- Use repository-relative paths everywhere.
+- Define organization abbreviations before using them.

@@ -1,3 +1,5 @@
-# Raw
+# Raw Data
 
-نسخه‌های ثبت‌شده و تغییرناپذیر فایل اصلی، به تفکیک dataset_id و تاریخ snapshot. هیچ فایل این لایه ویرایش یا جایگزین نمی‌شود.
+Registered, immutable copies of original source files, organized by subject,
+dataset ID, and period. Never edit, rewrite, or silently replace files in this
+layer.

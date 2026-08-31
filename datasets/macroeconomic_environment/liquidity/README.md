@@ -1,3 +1,3 @@
-# نقدینگی
+# Liquidity
 
-این پوشه فعلاً فقط جایگاه موضوع را مشخص می‌کند. هیچ داده‌ای تا زمان مشاهده فایل واقعی، تأیید نام فارسی شاخص، منبع، واحد، پوشش و تناوب ثبت‌شده یا نهایی تلقی نمی‌شود.
+Dataset packages for monetary aggregates and liquidity indicators. Keep providers separate through standardization and document units, reference periods, revisions, and reconciliation rules.

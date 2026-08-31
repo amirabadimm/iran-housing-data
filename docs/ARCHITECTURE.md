@@ -1,43 +1,43 @@
-# معماری مخزن
+# Repository Architecture
 
-## محور موضوعی
+## Subject hierarchy
 
 ```text
 datasets/
-├── housing_market/              بازار مسکن
-│   ├── residential_sales/       معاملات خرید و فروش
-│   ├── rent/                    اجاره‌بها
-│   └── land/                    زمین
-├── housing_supply/              عرضه مسکن
-│   ├── building_permits/        پروانه‌های ساختمانی
-│   ├── construction_starts/     شروع ساخت
-│   └── construction_completions/ تکمیل ساختمان
-├── construction_costs/          هزینه ساخت
-├── housing_investment/          سرمایه‌گذاری مسکن
-├── housing_finance/             تأمین مالی مسکن
-├── capital_markets/             بازار سرمایه مرتبط
-└── macroeconomic_environment/   محیط کلان
-    ├── liquidity/               نقدینگی
-    ├── inflation/               تورم
-    ├── exchange_rate/           نرخ ارز
-    ├── interest_rates/          نرخ‌های سود
-    ├── unemployment/            بیکاری
-    └── gdp/                     تولید ناخالص داخلی
+|-- housing_market/
+|   |-- residential_sales/
+|   |-- rent/
+|   `-- land/
+|-- housing_supply/
+|   |-- building_permits/
+|   |-- construction_starts/
+|   `-- construction_completions/
+|-- construction_costs/
+|-- housing_investment/
+|-- housing_finance/
+|-- capital_markets/
+`-- macroeconomic_environment/
+    |-- liquidity/
+    |-- inflation/
+    |-- exchange_rate/
+    |-- interest_rates/
+    |-- unemployment/
+    `-- gdp/
 ```
 
-منبع، شاخه اصلی نیست. برای مثال آمار مشابه بانک مرکزی و مرکز آمار دو dataset_id مستقل دارند، در `standardized` جدا می‌مانند و تنها با تعریف صریح روش تطبیق در `curated` ترکیب می‌شوند.
+The provider is metadata, not the top-level organizing principle. Comparable statistics from different providers use separate dataset IDs and remain separate through standardization. Curated data may combine them only through a documented reconciliation method.
 
-## لایه‌های داده
+## Data lifecycle
 
-1. `incoming`: محل موقت فایل دستی یا تازه‌دریافت‌شده؛ قابل اتکا نیست.
-2. `raw`: snapshot ثبت‌شده و تغییرناپذیر از فایل اصلی.
-3. `standardized`: قالب یکنواخت، بدون ادغام مفهومی منابع مختلف.
-4. `curated`: داده معتبر و پژوهش‌پذیر با قواعد مستند.
-5. `marts`: مدل مصرفی، از جمله مدل ستاره‌ای Power BI.
-6. `staging`: خروجی موقت هر run پیش از انتشار اتمی.
+1. `incoming`: temporary, unverified arrivals.
+2. `raw`: registered, immutable source snapshots.
+3. `staging`: temporary run output used for validation.
+4. `standardized`: consistent technical format without cross-provider merging.
+5. `curated`: validated, research-ready datasets.
+6. `marts`: stable consumption models, including Power BI schemas.
 
-## واحد استقلال
+## Dataset package
 
-هر مجموعه‌داده یک بسته مستقل در `datasets/<domain>/<topic>/<dataset_id>/` است و حداقل `dataset.yml`، `README.fa.md` و `schema.yml` دارد. کد فقط زمانی افزوده می‌شود که فایل واقعی و روش پردازش مشخص باشد.
+Each dataset package lives at `datasets/<domain>/<topic>/<dataset_id>/` and contains at least `dataset.yml`, `README.md`, and `schema.yml`.
 
-چرخه وضعیت: `discovered → downloaded → inspected → registered → validated → standardized → published → monitored`.
+Lifecycle: `discovered -> downloaded -> inspected -> registered -> validated -> standardized -> published -> monitored`.

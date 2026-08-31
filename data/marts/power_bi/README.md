@@ -1,3 +1,3 @@
-# Power BI marts
+# Power BI Marts
 
-تنها خروجی‌های پایدار، کنترل‌شده و مناسب مدل Power BI در این مسیر منتشر می‌شوند.
+Publish only stable, validated tables designed for the Power BI semantic model.

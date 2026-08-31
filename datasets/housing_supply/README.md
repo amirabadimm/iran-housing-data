@@ -1,3 +1,3 @@
-# عرضه مسکن
+# Housing Supply
 
-پروانه‌های ساختمانی، شروع ساخت و تکمیل ساختمان.
+Building permits, construction starts, completions, and the residential stock.

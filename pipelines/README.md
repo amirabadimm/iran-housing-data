@@ -1,3 +1,3 @@
 # Pipelines
 
-کدهای دریافت، استانداردسازی، اعتبارسنجی و انتشار فقط پس از ثبت یک فایل واقعی ایجاد می‌شوند. هیچ پایپ‌لاین عمومی یا اسکریپت خالی در این مخزن نگهداری نمی‌شود.
+Add ingestion, standardization, validation, or publication code only for registered source files and a documented processing purpose. Do not keep empty or speculative pipelines.

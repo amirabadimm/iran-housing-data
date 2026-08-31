@@ -1,3 +1,3 @@
-# بازار سرمایه مرتبط
+# Capital Markets
 
-شرکت‌ها، صندوق‌های املاک و شاخص‌های صنایع مرتبط با مسکن.
+Companies, real-estate funds, housing-related securities, and relevant industry indices.

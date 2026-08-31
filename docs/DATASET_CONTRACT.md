@@ -1,21 +1,20 @@
-# قرارداد مجموعه‌داده
+# Dataset Contract
 
-هر `dataset.yml` باید این موارد را با شواهد ثبت کند:
+Each `dataset.yml` records evidence-backed metadata:
 
-- شناسه پایدار و عنوان واقعی فارسی؛
-- سازمان تولیدکننده و واحد منتشرکننده؛
-- صفحه معرفی منبع و لینک مستقیم دریافت؛
-- روش دسترسی: دستی، API یا دریافت ماشینی؛
-- تناوب، پوشش زمانی و جغرافیایی، واحد و طبقه‌بندی؛
-- ماهیت موجودی/جریان و زمان مرجع؛
-- نام فایل اصلی، تاریخ انتشار و دریافت و checksum؛
-- مجوز یا محدودیت استفاده؛
-- تأخیر مورد انتظار انتشار و سیاست بازنگری؛
-- روش به‌روزرسانی و کلید یکتای رکورد؛
-- قواعد هم‌پوشانی نسخه‌ها و شیوه انتشار.
+- stable dataset ID and English title;
+- provider and publishing unit;
+- official landing page and download URL;
+- access method;
+- frequency, coverage, geography, unit, and classification;
+- stock/flow nature and reference time;
+- source filename, timestamps, and checksum;
+- license or restrictions;
+- publication lag and revision policy;
+- update strategy, record key, overlap rules, and publication method.
 
-مقدار ناشناخته باید `null` بماند و در `metadata/quality_issues.csv` ثبت شود؛ حدس‌زدن ممنوع است.
+Unknown values remain `null` and are registered in `metadata/quality_issues.csv`. Never infer unsupported metadata.
 
-`schema.yml` نام واقعی متغیر، نام فنی، نوع، واحد، تعریف، منبع تعریف، دامنه مجاز و nullable بودن را ثبت می‌کند. تغییر schema باید پیش از انتشار متوقف و بررسی شود.
+`schema.yml` defines technical names, types, units, definitions, domains, and nullability. Stop publication and review unexpected schema changes.
 
-هر خروجی مشتق‌شده باید dataset_id ورودی، نسخه/snapshot ورودی، فایل یا تنظیمات مولد، زمان اجرا و وضعیت آزمون را در `metadata/update_log.csv` ثبت کند.
+Every derived output records its inputs, generating code, execution time, and validation status in `metadata/update_log.csv`.

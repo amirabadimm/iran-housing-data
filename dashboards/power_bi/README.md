@@ -1,3 +1,3 @@
 # Power BI
 
-تعریف مدل، measureها، سیاست refresh و راهنمای داشبورد در اینجا قرار می‌گیرد. فایل محلی `.pbix` به‌طور پیش‌فرض commit نمی‌شود.
+Document the semantic model, measures, refresh policy, and dashboard operation here. Local `.pbix` files are excluded from Git by default.

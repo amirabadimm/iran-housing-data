@@ -1,3 +1,3 @@
-# خروجی‌ها
+# Outputs
 
-جدول‌ها، نمودارها و گزارش‌های قابل تحویل؛ هر خروجی باید ورودی و روش تولید مشخص داشته باشد.
+Store deliverable tables, figures, and reports here. Every output must identify its input datasets, versions, and generating method.

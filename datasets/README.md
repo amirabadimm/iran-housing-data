@@ -1,3 +1,3 @@
-# فهرست موضوعی مجموعه‌داده‌ها
+# Dataset Catalog
 
-هر dataset در موضوع خود یک پوشه مستقل دارد. سازمان منتشرکننده در نام dataset و شناسنامه ثبت می‌شود، اما سطح اصلی دسته‌بندی موضوع است.
+Each dataset is an independent package within its research subject. Provider details belong in dataset metadata; the primary hierarchy remains subject-oriented.

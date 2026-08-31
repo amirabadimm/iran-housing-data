@@ -1,10 +1,10 @@
 dataset_id: null
-title_fa: null
+title: null
 domain: null
 topic: null
 provider:
-  organization_fa: null
-  publishing_unit_fa: null
+  organization: null
+  publishing_unit: null
 source:
   landing_page_url: null
   direct_download_url: null
