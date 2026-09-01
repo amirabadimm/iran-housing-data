@@ -1,0 +1,36 @@
+dataset_id: sci_tehran_residential_building_input_prices
+title: SCI Tehran Residential Building Input Price Index and Material Prices
+domain: construction_costs
+topic: input_price_indices
+provider:
+  organization: Statistical Center of Iran
+  publishing_unit: null
+source:
+  landing_page_url: https://amar.org.ir/statistical-information/statid/57092
+  direct_download_url: null
+  access_method: manual
+coverage:
+  frequency: mixed quarterly and annual
+  start_period: 1390-Q1
+  end_period: 1404-Q4
+  geography: Tehran city
+  unit: mixed index percent and rials
+  stock_or_flow: null
+  reference_time: quarter or year as identified by source table
+file:
+  original_name: ts_building_140404-14050319105758.xlsx
+  publication_date: null
+  downloaded_at: see metadata/file_registry.csv
+  checksum_sha256: b869bda58b7b861d3673508f0e30ae87afc9ddeef6dad6de7b88b1d0ce002e53
+license: null
+expected_release_lag_days: null
+update_mode: snapshot_rebuild
+primary_key: [source_table, metric, solar_hijri_period, category_fa]
+overlap_policy: retain source tables and base-year series separately
+revision_policy: never replace a registered raw workbook
+publish_mode: atomic
+status: standardized
+standardized_outputs:
+  - data/standardized/construction_costs/input_price_indices/sci_tehran_residential_building_input_prices/building_input_price_series.csv
+  - data/standardized/construction_costs/input_price_indices/sci_tehran_residential_building_input_prices/building_material_prices.csv
+generating_pipeline: pipelines/standardization/build_sci_tehran_building_input_prices.py

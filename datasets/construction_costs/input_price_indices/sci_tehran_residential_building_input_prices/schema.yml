@@ -1,0 +1,23 @@
+outputs:
+  building_input_price_series.csv:
+    primary_key: [source_table, metric, solar_hijri_period, category_fa]
+    fields:
+      - {name: metric, type: string, nullable: false}
+      - {name: solar_hijri_period, type: string, nullable: false}
+      - {name: category_fa, type: string, nullable: false}
+      - {name: value, type: number, nullable: false}
+      - {name: unit, type: string, nullable: false}
+      - {name: source_table, type: string, nullable: false}
+      - {name: source_file, type: string, nullable: false}
+      - {name: source_sha256, type: string, nullable: false}
+  building_material_prices.csv:
+    primary_key: [source_table, source_row]
+    fields:
+      - {name: solar_hijri_period, type: string, nullable: false}
+      - {name: material_group_fa, type: string, nullable: false}
+      - {name: item_fa, type: string, nullable: false}
+      - {name: minimum_price_rials, type: number, nullable: true}
+      - {name: maximum_price_rials, type: number, nullable: true}
+      - {name: average_price_rials, type: number, nullable: true}
+      - {name: source_table, type: string, nullable: false}
+      - {name: source_row, type: integer, nullable: false}

@@ -1,0 +1,34 @@
+dataset_id: sci_urban_consumer_price_index
+title: SCI Urban Household Consumer Price Index
+domain: macroeconomic_environment
+topic: inflation
+provider:
+  organization: Statistical Center of Iran
+  publishing_unit: null
+source:
+  landing_page_url: https://amar.org.ir/statistical-information/statid/28595
+  direct_download_url: null
+  access_method: manual
+coverage:
+  frequency: mixed monthly and annual
+  start_period: 1315
+  end_period: 1405-04
+  geography: Iran and provinces urban households
+  unit: index or percent
+  stock_or_flow: null
+  reference_time: month or year as identified by source table
+file:
+  original_name: ts_urban_140504-14050519161936.xlsx
+  publication_date: null
+  downloaded_at: see metadata/file_registry.csv
+  checksum_sha256: a131c0c0941c4b0368125040364d3270b06901de57a221b5c000882f2c6f7d82
+license: null
+expected_release_lag_days: null
+update_mode: snapshot_rebuild
+primary_key: [source_table, source_column, series_scope, geography_code, category_fa, solar_hijri_period]
+overlap_policy: retain overlapping tables and repeated source-period labels with column lineage
+revision_policy: never replace a registered raw workbook
+publish_mode: atomic
+status: standardized
+standardized_output: data/standardized/macroeconomic_environment/inflation/sci_urban_consumer_price_index/urban_cpi_series.csv
+generating_pipeline: pipelines/standardization/build_sci_urban_consumer_price_index.py

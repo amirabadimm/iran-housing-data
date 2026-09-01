@@ -22,9 +22,13 @@ A reproducible, subject-oriented repository for collecting, preserving, standard
 - `outputs/`: deliverable tables, figures, and reports
 - `templates/dataset/`: new-dataset template
 
-## Current production dataset
+## Current standardized datasets
 
 The CBI monthly monetary and credit dataset provides 240 validated observations from Solar Hijri 1385-01 through 1404-12. See its [dataset documentation](datasets/macroeconomic_environment/liquidity/cbi_selected_economic_indicators_monetary_credit_monthly/README.md).
+
+The SCI Tehran building-input dataset provides normalized price-index, inflation, and selected-material-price observations. See its [dataset documentation](datasets/construction_costs/input_price_indices/sci_tehran_residential_building_input_prices/README.md).
+
+The SCI urban CPI dataset provides normalized national, major-group, provincial, and historical urban-household series from all 12 source tables. See its [dataset documentation](datasets/macroeconomic_environment/inflation/sci_urban_consumer_price_index/README.md).
 
 ## Adding source data
 

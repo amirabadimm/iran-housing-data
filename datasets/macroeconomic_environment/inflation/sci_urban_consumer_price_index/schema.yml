@@ -1,0 +1,18 @@
+primary_key: [source_table, source_column, series_scope, geography_code, category_fa, solar_hijri_period]
+fields:
+  - {name: metric, type: string, nullable: false}
+  - {name: base_solar_hijri_year, type: integer, nullable: false}
+  - {name: series_scope, type: string, nullable: false}
+  - {name: geography_code, type: string, nullable: false}
+  - {name: geography_fa, type: string, nullable: false}
+  - {name: category_fa, type: string, nullable: false}
+  - {name: frequency, type: string, nullable: false}
+  - {name: solar_hijri_period, type: string, nullable: false}
+  - {name: source_label_year, type: integer, nullable: false}
+  - {name: period_label_status, type: string, nullable: false}
+  - {name: value, type: number, nullable: false}
+  - {name: unit, type: string, nullable: false}
+  - {name: source_table, type: string, nullable: false}
+  - {name: source_column, type: integer, nullable: false}
+  - {name: source_file, type: string, nullable: false}
+  - {name: source_sha256, type: string, nullable: false}
