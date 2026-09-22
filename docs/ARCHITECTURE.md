@@ -2,10 +2,15 @@
 
 ## Subject hierarchy
 
+This architecture was introduced in the redesign committed as `9e711d0` on 31 August 2026. Earlier collections and calculation workflows existed under the former `src/`, `data/cleaned/`, and `data/derived/` structure. Their historical availability does not imply publication in the new structure. See [Project Status](../PROJECT_STATUS.md) for the transition and current inventory.
+
+The tree below includes both established topics and planned or placeholder topics; directory existence alone does not indicate a completed dataset. Consult the dataset registry for established packages.
+
 ```text
 datasets/
 |-- housing_market/
 |   |-- residential_sales/
+|   |-- transaction_prices/
 |   |-- rent/
 |   `-- land/
 |-- housing_supply/
@@ -26,6 +31,8 @@ datasets/
 ```
 
 The provider is metadata, not the top-level organizing principle. Comparable statistics from different providers use separate dataset IDs and remain separate through standardization. Curated data may combine them only through a documented reconciliation method.
+
+The current CBI Tehran monthly housing package lives under `housing_market/transaction_prices/cbi_tehran_housing_monthly/`. `residential_sales/` is an existing scaffold topic, not the path of that published package. No folder rename or data migration is implied by this documentation.
 
 ## Data lifecycle
 
